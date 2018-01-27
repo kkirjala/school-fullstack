@@ -2,23 +2,33 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const App = () => {
-  
-  const courseName = 'Half Stack -sovelluskehitys'
-  const osa1 = 'Reactin perusteet'
-  const tehtavia1 = 10
-  const osa2 = 'Tiedonvälitys propseilla'
-  const tehtavia2 = 7
-  const osa3 = 'Komponenttien tila'
-  const tehtavia3 = 14
 
-  return (
-    <div>
-        <PageHeader headerText={courseName} />
-        <PageContent part1={osa1} tasks1={tehtavia1} part2={osa2} tasks2={tehtavia2}
-            part3={osa3} tasks3={tehtavia3} />
-        <TotalTasks totalAmountTasks={tehtavia1 + tehtavia2 + tehtavia3} />
-    </div>
-  )
+
+    const course = {
+        courseName: 'Half Stack -sovellauskehitys',
+        courseParts: [
+            {
+              name: 'Reactin perusteet',
+              tasks: 10
+            },
+            {
+              name: 'Tiedonvälitys propseilla',
+              tasks: 7
+            },
+            {
+              name: 'Komponenttien tila',
+              tasks: 14
+            }
+        ]
+    }
+  
+    return (
+        <div>
+          <PageHeader headerText={course.courseName} />
+          <PageContent courseParts={course.courseParts} />
+          <TotalTasks courseParts={course.courseParts} />
+        </div>
+    )
 }
 
 // Otsikko, Sisalto ja Yhteensa
@@ -31,12 +41,14 @@ const PageHeader = (props) => {
 }
 
 const PageContent = (props) => {
+    
+    const exerciseSets = props.courseParts.map((exSet) =>
+        <ExerciseSet partId={exSet.name} amountTasks={exSet.tasks} />
+    );
 
     return (
         <div>
-            <ExerciseSet partId={props.part1} amountTasks={props.tasks1} />
-            <ExerciseSet partId={props.part2} amountTasks={props.tasks2} />
-            <ExerciseSet partId={props.part3} amountTasks={props.tasks3} />
+            {exerciseSets}
         </div>
     )
 }
@@ -48,8 +60,15 @@ const ExerciseSet = (props) => {
 }
 
 const TotalTasks = (props) => {
+
+    var totalAmountTasks = 0;
+
+    props.courseParts.forEach(element => {
+        totalAmountTasks += element.tasks;
+    });
+
     return (
-        <p>yhteensä {props.totalAmountTasks} tehtävää</p> 
+        <p>yhteensä {totalAmountTasks} tehtävää</p> 
     )
 }
 
