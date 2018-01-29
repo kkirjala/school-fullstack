@@ -41,9 +41,9 @@ const PageHeader = (props) => {
 }
 
 const PageContent = (props) => {
-    
+
     const exerciseSets = props.courseParts.map((exSet) =>
-        <ExerciseSet partId={exSet.name} amountTasks={exSet.tasks} />
+        <ExerciseSet key={exSet.name} partId={exSet.name} amountTasks={exSet.tasks} />
     );
 
     return (
@@ -55,7 +55,7 @@ const PageContent = (props) => {
 
 const ExerciseSet = (props) => {
     return (
-        <p>{props.partId} {props.amountTasks}</p>
+        <p key="{props.key}">{props.partId} {props.amountTasks}</p>
     )
 }
 
