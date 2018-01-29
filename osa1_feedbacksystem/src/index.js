@@ -1,44 +1,55 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const App = () => {
+// const App = () => {
+class App extends React.Component {
+    constructor() {
+        super()
+        this.state = {
 
-    const feedbackOptions = {
-        opinions: [
-            {
-                id: 0,
-                description: 'Hyvä',
-                votes: 0
-            },
-            {
-                id: 1, 
-                description: 'Neutraali',
-                votes: 0
-            },
-            {
-                id: 2,
-                description: 'Huono',
-                votes: 0
-            }
-        ]
-    }
+            counter: 1,
+
+            opinions: [
+                {
+                    id: 0,
+                    description: 'Hyvä',
+                    votes: 0
+                },
+                {
+                    id: 1, 
+                    description: 'Neutraali',
+                    votes: 0
+                },
+                {
+                    id: 2,
+                    description: 'Huono',
+                    votes: 0
+                }
+            ]
+
+        }
+    }    
+
   
-    return (
-        <div>
-            <FeedbackEntry feedbackOptions={feedbackOptions} />
-            <FeedbackStatistics />
-        </div>
-    )
+    render() {
+        return(
+            <div>
+                <FeedbackEntry feedbackOptions={this.state.opinions} />
+                <FeedbackStatistics />
+            </div>
+        )
+    }         
 }
 
 // Otsikko, Sisalto ja Yhteensa
 
 const FeedbackEntry = ({feedbackOptions}) => {
     // header + napit
+    
     return (
         <div>
             <SectionHeader headerText="Anna palautetta" />
-            <FeedbackButtonPanel opinions={feedbackOptions.opinions} />            
+            <FeedbackButtonPanel opinions={feedbackOptions} />            
         </div>
     )
 }
@@ -60,7 +71,7 @@ const FeedbackButtonPanel = ({opinions}) => {
     opinions.forEach(element => {
         FeedbackButtons.push(<FeedbackButton key={element.id} buttonId={element.id} label={element.description} />)
     });
-
+    
     return (
         <div>
             {FeedbackButtons}
