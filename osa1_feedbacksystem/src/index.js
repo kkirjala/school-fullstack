@@ -7,9 +7,8 @@ class App extends React.Component {
         super()
         this.state = {
 
-            counter: 1,
-
             opinions: [
+                
                 {
                     id: 0,
                     description: 'Hyvä',
@@ -30,6 +29,14 @@ class App extends React.Component {
         }
     }    
 
+    // TODO:
+    registerOpinion = (opinionId) => {
+        const opinionsMatch = this.state.opinions.find(x => x.id === opinionId);
+
+        this.setState((prevState) => ({
+            // opinions: prevState.counter + 1
+        }));
+    }
   
     render() {
         return(
@@ -71,7 +78,7 @@ const FeedbackButtonPanel = ({opinions}) => {
     opinions.forEach(element => {
         FeedbackButtons.push(<FeedbackButton key={element.id} buttonId={element.id} label={element.description} />)
     });
-    
+
     return (
         <div>
             {FeedbackButtons}
@@ -81,7 +88,7 @@ const FeedbackButtonPanel = ({opinions}) => {
 
 const FeedbackButton = (props) => {
     return (
-        <button onClick={() => console.log('click:', props.buttonId)}>{props.label}</button>
+        <button onClick={() => registerOpinion(props.buttonId)}>{props.label}</button>
     )
 }
 
