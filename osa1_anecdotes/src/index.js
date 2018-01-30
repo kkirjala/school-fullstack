@@ -35,11 +35,15 @@ class App extends React.Component {
     }
 
     render() {
-        console.log("render sel: ", this.state.selected);
+
         return (
             <div>
                 <div>{this.props.anecdotes[this.state.selected]}</div>
+                
+                {this.state.votes[this.state.selected] > 0 &&
                 <div>Has {this.state.votes[this.state.selected]} votes</div>
+                }
+                
                 <div>
                     <RandomizeButton handleClick={this.randomizeAnecdote} />
                     <VotingButton handleClick={this.voteAnecdote(this.state.selected)} />                    
