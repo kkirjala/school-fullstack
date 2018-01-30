@@ -15,7 +15,7 @@ class App extends React.Component {
       }
 
     }
-  
+
     registerOpinion = (counterValue) => {
 
         return () => {
@@ -29,6 +29,25 @@ class App extends React.Component {
 
     }
 
+    calculateTotalNumberOfVotes() {
+        return this.state.opinions.Huono
+            + this.state.opinions.Neutraali
+            + this.state.opinions.Hyvä;
+    }
+
+    calculateAverage() {
+
+        let totalScore = (this.state.opinions.Huono * -1) 
+            + (this.state.opinions.Neutraali * 0) 
+            + (this.state.opinions.Hyvä * 1);
+
+        return totalScore / this.calculateTotalNumberOfVotes();
+
+    }
+
+    calculatePositives() {
+        return this.state.opinions.Hyvä / this.calculateTotalNumberOfVotes();
+    }
 
     render() {
         return (
@@ -39,7 +58,11 @@ class App extends React.Component {
                     handleClick={this.registerOpinion}
                 />
 
-                <Statistics opinions={this.state.opinions} />
+                <Statistics 
+                    opinions={this.state.opinions} 
+                    average={this.calculateAverage()}
+                    amountPositives={this.calculatePositives()}
+                />
 
             </div>
         )
@@ -48,7 +71,14 @@ class App extends React.Component {
 
 
 
-const Statistics = ({opinions}) => {
+const Statistics = ({opinions, average, amountPositives}) => {
+
+    // jos ei vielä arvioida, näytetään placeholder
+    if (isNaN(average)) {
+        return (
+            <div>Ei yhtään palautetta annettu.</div>              
+        )
+    }
 
     const statisticsRows = Object.entries(opinions).map(([key,value])=>
         <Statistic key={key} vote={key} amount={value} />
@@ -57,6 +87,8 @@ const Statistics = ({opinions}) => {
         <div>
             <SectionHeader headerText="Statistiikka" />
             {statisticsRows}
+            <div>Keskiarvo: {average.toFixed(2)}</div>
+            <div>Positiivisia: {(amountPositives * 100).toFixed(2)} %</div>
         </div>
     )
 }
