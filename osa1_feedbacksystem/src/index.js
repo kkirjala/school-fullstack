@@ -17,6 +17,7 @@ class App extends React.Component {
     }
   
     registerOpinion = (counterValue) => {
+
         return () => {
 
             var newOpinions = this.state.opinions;
@@ -30,26 +31,13 @@ class App extends React.Component {
 
 
     render() {
-        console.log('renderöidään', this.state)
         return (
             <div>
 
-                <FeedbackEntry opinions={this.state.opinions} />
-
-                <div>
-                    <Button 
-                        handleClick={this.registerOpinion("Huono")}
-                        text="Huono"
-                    />
-                    <Button 
-                        handleClick={this.registerOpinion("Neutraali")}
-                        text="Neutraali"
-                    />
-                    <Button 
-                        handleClick={this.registerOpinion("Hyvä")}
-                        text="Hyvä"
-                    />
-                </div>
+                <FeedbackEntry 
+                    opinions={this.state.opinions} 
+                    handleClick={this.registerOpinion}
+                />
 
                 <FeedbackStatistics opinions={this.state.opinions} />
 
@@ -59,11 +47,18 @@ class App extends React.Component {
 }
 
 
-const Button = ({ handleClick, text }) => (
-    <button onClick={handleClick}>
-      {text}
-    </button>
-  )
+const FeedbackButton = ({ handleClick, text }) => {
+
+
+
+    return (
+        <button onClick={handleClick}>
+            {text}
+        </button>
+    )
+}
+
+
 
 const FeedbackStatistics = ({opinions}) => {
     // header + statsit per mielipide
@@ -84,20 +79,20 @@ const Display = ({ opinions }) => {
         </div>
     )
 }
-// Otsikko, Sisalto ja Yhteensa
 
+const FeedbackEntry = ({ opinions, handleClick }) => {
 
-
-
-const FeedbackEntry = ({opinions}) => {
-    // header + napit
-    
+    const voteButtons = Object.keys(opinions).map((opinion) =>
+        <FeedbackButton key={opinion} text={opinion} handleClick={handleClick(opinion)} />
+    )
+            
     return (
         <div>
             <SectionHeader headerText="Anna palautetta" />
-         
+            {voteButtons}
         </div>
     )
+
 }
 
 
