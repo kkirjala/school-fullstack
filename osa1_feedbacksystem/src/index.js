@@ -86,9 +86,13 @@ const Statistics = ({opinions, average, amountPositives}) => {
     return (
         <div>
             <SectionHeader headerText="Statistiikka" />
-            {statisticsRows}
-            <StatisticAverage average={average} />
-            <StatisticPositive amountPositives={amountPositives} />
+            <table>
+                <tbody>
+                    {statisticsRows}
+                    <StatisticAverage average={average} />                    
+                    <StatisticPositive amountPositives={amountPositives} />
+                </tbody>
+            </table>
         </div>
     )
 }
@@ -96,19 +100,40 @@ const Statistics = ({opinions, average, amountPositives}) => {
 const Statistic = ({ vote, amount }) => {
 
     return (
-        <div key={vote}>{vote}: {amount}</div>
+        <tr>
+            <td>
+                {vote}
+            </td>
+            <td>
+                {amount}
+            </td>
+        </tr>
     )
 }
 
 const StatisticAverage = ({average}) => {
     return (
-        <div>Keskiarvo: {average.toFixed(2)}</div>
+        <tr>
+            <td>
+                Keskiarvo
+            </td>
+            <td>
+                {average.toFixed(2)}
+            </td>
+        </tr>
     )
 }
 
 const StatisticPositive = ({amountPositives}) => {
     return (
-        <div>Positiivisia: {(amountPositives * 100).toFixed(2)} %</div>
+        <tr>
+            <td>
+                Positiivisia
+            </td>
+            <td>
+                {(amountPositives * 100).toFixed(2)} %
+            </td>
+        </tr>
     )
 }
 
