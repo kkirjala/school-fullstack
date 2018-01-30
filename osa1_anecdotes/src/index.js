@@ -6,7 +6,7 @@ class App extends React.Component {
         super(props)
         this.state = {
             selected: 0,
-            votes: []
+            votes: {}
         }
     }
 
@@ -34,6 +34,10 @@ class App extends React.Component {
 
     }
 
+    getHighestVotesIndex = () => {
+        return 0;
+    }
+
 
     render() {
         console.log("render sel: ", this.state.selected);
@@ -43,7 +47,14 @@ class App extends React.Component {
                 <div>Has {this.state.votes[this.state.selected]} votes</div>
                 <div>
                     <RandomizeButton handleClick={this.randomizeAnecdote} />
-                    <VotingButton handleClick={this.voteAnecdote(this.state.selected)} />
+                    <VotingButton handleClick={this.voteAnecdote(this.state.selected)} />                    
+                </div>
+                <div>
+                    <VotingStatistics 
+                        votes={this.state.votes}
+                        highestVoteIndex={this.getHighestVotesIndex()} 
+                        anecdotes={this.props.anecdotes} 
+                    />
                 </div>
             </div>
         )
@@ -75,7 +86,29 @@ const VotingButton = ({handleClick}) => {
     )
 }
 
+const VotingStatistics = ({votes, highestVoteIndex, anecdotes}) => {
+    
 
+    return (
+
+        const getHighestVotesIndex = () => {
+            let max = 0;
+
+            Object.keys(votes).forEach(function (key) {
+                console.log(votes[key]);
+        
+                if (votes[key] > votes[max]) {
+                    max = key;
+                }
+                
+                return max;
+            }
+        }
+
+
+        <div>{anecdotes[getHighestVotesIndex()]}</div>
+    )
+}
 
 
 ReactDOM.render(
