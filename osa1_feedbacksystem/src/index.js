@@ -39,7 +39,7 @@ class App extends React.Component {
                     handleClick={this.registerOpinion}
                 />
 
-                <FeedbackStatistics opinions={this.state.opinions} />
+                <Statistics opinions={this.state.opinions} />
 
             </div>
         )
@@ -47,25 +47,12 @@ class App extends React.Component {
 }
 
 
-const FeedbackButton = ({ handleClick, text }) => {
 
-
-
-    return (
-        <button onClick={handleClick}>
-            {text}
-        </button>
-    )
-}
-
-
-
-const FeedbackStatistics = ({opinions}) => {
+const Statistics = ({opinions}) => {
 
     const statisticsRows = Object.entries(opinions).map(([key,value])=>
-        <div key={key}>{key} : {value}</div>
+        <Statistic key={key} vote={key} amount={value} />
     )
-
     return (
         <div>
             <SectionHeader headerText="Statistiikka" />
@@ -74,6 +61,12 @@ const FeedbackStatistics = ({opinions}) => {
     )
 }
 
+const Statistic = ({ vote, amount }) => {
+
+    return (
+        <div key={vote}>{vote} : {amount}</div>
+    )
+}
 
 const FeedbackEntry = ({ opinions, handleClick }) => {
 
@@ -91,6 +84,14 @@ const FeedbackEntry = ({ opinions, handleClick }) => {
 }
 
 
+const FeedbackButton = ({ handleClick, text }) => {
+
+    return (
+        <button onClick={handleClick}>
+            {text}
+        </button>
+    )
+}
 
 
 
