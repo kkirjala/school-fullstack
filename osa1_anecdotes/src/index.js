@@ -85,7 +85,7 @@ const VotingStatistics = ({votes, highestVoteIndex, anecdotes}) => {
     const getHighestVotesIndex = () => {
         let max = 0;
 
-        Object.keys(votes).forEach(function (key) {
+        Object.keys(votes).forEach((key) => {
             if (votes[key] > votes[max]) {
                 max = key;
             }
