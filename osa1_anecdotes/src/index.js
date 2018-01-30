@@ -34,11 +34,6 @@ class App extends React.Component {
 
     }
 
-    getHighestVotesIndex = () => {
-        return 0;
-    }
-
-
     render() {
         console.log("render sel: ", this.state.selected);
         return (
@@ -52,7 +47,6 @@ class App extends React.Component {
                 <div>
                     <VotingStatistics 
                         votes={this.state.votes}
-                        highestVoteIndex={this.getHighestVotesIndex()} 
                         anecdotes={this.props.anecdotes} 
                     />
                 </div>
@@ -87,29 +81,49 @@ const VotingButton = ({handleClick}) => {
 }
 
 const VotingStatistics = ({votes, highestVoteIndex, anecdotes}) => {
-    
+
+    const getHighestVotesIndex = () => {
+        let max = 0;
+
+        Object.keys(votes).forEach(function (key) {
+            if (votes[key] > votes[max]) {
+                max = key;
+            }
+        });
+
+        return max;
+    }
+
+    // conditionally create the statistics depending on if there are any votes.
+    const statisticsRows = () => {
+
+        if (Object.keys(votes).length === 0) {
+            return (
+                <div>No votes yet.</div>
+            )
+        } else {
+            return (
+                <div>
+                    <div>{anecdotes[getHighestVotesIndex()]}</div>
+                    <div>Has {votes[getHighestVotesIndex()]} votes</div>
+                </div>
+            )
+        }
+    }
 
     return (
-
-        const getHighestVotesIndex = () => {
-            let max = 0;
-
-            Object.keys(votes).forEach(function (key) {
-                console.log(votes[key]);
-        
-                if (votes[key] > votes[max]) {
-                    max = key;
-                }
-                
-                return max;
-            }
-        }
-
-
-        <div>{anecdotes[getHighestVotesIndex()]}</div>
+        <div>
+            <SectionHeader headerText="Anecdotes with most votes" />
+            {statisticsRows()}
+        </div>
     )
 }
 
+const SectionHeader = ({headerText}) => {
+    return (
+        <h1>{headerText}</h1>
+    )
+}
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
