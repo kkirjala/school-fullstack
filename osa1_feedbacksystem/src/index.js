@@ -61,24 +61,19 @@ const FeedbackButton = ({ handleClick, text }) => {
 
 
 const FeedbackStatistics = ({opinions}) => {
-    // header + statsit per mielipide
+
+    const statisticsRows = Object.entries(opinions).map(([key,value])=>
+        <div key={key}>{key} : {value}</div>
+    )
+
     return (
         <div>
             <SectionHeader headerText="Statistiikka" />
-            <Display opinions={opinions} />
+            {statisticsRows}
         </div>
     )
 }
 
-const Display = ({ opinions }) => {
-    return (
-        <div>
-            Huono: {opinions["Huono"]} <br/>
-            Neutraali: {opinions["Neutraali"]} <br/>
-            Hyvä: {opinions["Hyvä"]} <br/>
-        </div>
-    )
-}
 
 const FeedbackEntry = ({ opinions, handleClick }) => {
 
