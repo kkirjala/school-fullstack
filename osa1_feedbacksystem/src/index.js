@@ -1,96 +1,107 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-// const App = () => {
 class App extends React.Component {
-    constructor() {
-        super()
-        this.state = {
 
-            opinions: [
-                
-                {
-                    id: 0,
-                    description: 'Hyvä',
-                    votes: 0
-                },
-                {
-                    id: 1, 
-                    description: 'Neutraali',
-                    votes: 0
-                },
-                {
-                    id: 2,
-                    description: 'Huono',
-                    votes: 0
-                }
-            ]
+    constructor(props) {
+      super(props)
+      this.state = {
+        opinions: {
+            "Hyvä": 0,
+            "Neutraali": 0,
+            "Huono": 0
+        },
 
-        }
-    }    
+      }
 
-    // TODO:
-    registerOpinion = (opinionId) => {
-        const opinionsMatch = this.state.opinions.find(x => x.id === opinionId);
-
-        this.setState((prevState) => ({
-            // opinions: prevState.counter + 1
-        }));
     }
   
+    registerOpinion = (counterValue) => {
+        return () => {
+
+            var newOpinions = this.state.opinions;
+            newOpinions[counterValue] = newOpinions[counterValue] + 1;
+
+            this.setState({ opinions: newOpinions })
+
+        }
+
+    }
+
+
     render() {
-        return(
+        console.log('renderöidään', this.state)
+        return (
             <div>
-                <FeedbackEntry feedbackOptions={this.state.opinions} />
-                <FeedbackStatistics />
+
+                <FeedbackEntry opinions={this.state.opinions} />
+
+                <div>
+                    <Button 
+                        handleClick={this.registerOpinion("Huono")}
+                        text="Huono"
+                    />
+                    <Button 
+                        handleClick={this.registerOpinion("Neutraali")}
+                        text="Neutraali"
+                    />
+                    <Button 
+                        handleClick={this.registerOpinion("Hyvä")}
+                        text="Hyvä"
+                    />
+                </div>
+
+                <FeedbackStatistics opinions={this.state.opinions} />
+
             </div>
         )
-    }         
+    }
 }
 
+
+const Button = ({ handleClick, text }) => (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  )
+
+const FeedbackStatistics = ({opinions}) => {
+    // header + statsit per mielipide
+    return (
+        <div>
+            <SectionHeader headerText="Statistiikka" />
+            <Display opinions={opinions} />
+        </div>
+    )
+}
+
+const Display = ({ opinions }) => {
+    return (
+        <div>
+            Huono: {opinions["Huono"]} <br/>
+            Neutraali: {opinions["Neutraali"]} <br/>
+            Hyvä: {opinions["Hyvä"]} <br/>
+        </div>
+    )
+}
 // Otsikko, Sisalto ja Yhteensa
 
-const FeedbackEntry = ({feedbackOptions}) => {
+
+
+
+const FeedbackEntry = ({opinions}) => {
     // header + napit
     
     return (
         <div>
             <SectionHeader headerText="Anna palautetta" />
-            <FeedbackButtonPanel opinions={feedbackOptions} />            
-        </div>
-    )
-}
-
-const FeedbackStatistics = () => {
-    // header + statsit per mielipide
-    return (
-        <div>
-            <SectionHeader headerText="Statistiikka" />
+         
         </div>
     )
 }
 
 
-const FeedbackButtonPanel = ({opinions}) => {
 
-    const FeedbackButtons = [];
-
-    opinions.forEach(element => {
-        FeedbackButtons.push(<FeedbackButton key={element.id} buttonId={element.id} label={element.description} />)
-    });
-
-    return (
-        <div>
-            {FeedbackButtons}
-        </div>
-    )
-}
-
-const FeedbackButton = (props) => {
-    return (
-        <button onClick={() => registerOpinion(props.buttonId)}>{props.label}</button>
-    )
-}
 
 
 
