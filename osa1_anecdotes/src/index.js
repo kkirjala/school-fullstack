@@ -9,13 +9,23 @@ class App extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div>
-        {this.props.anecdotes[this.state.selected]}
-      </div>
-    )
+  randomizeAnecdote = () => {
+    this.setState((prevState) => ({
+        selected: Math.floor(Math.random()*this.props.anecdotes.length)
+    }));
   }
+
+
+    render() {
+        return (
+            <div>
+                <div>{this.props.anecdotes[this.state.selected]}</div>
+                <div>
+                    <RandomizeButton handleClick={this.randomizeAnecdote} />
+                </div>
+            </div>
+        )
+    }
 }
 
 const anecdotes = [
@@ -26,6 +36,14 @@ const anecdotes = [
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
+
+const RandomizeButton = ({handleClick}) => {
+    return (
+        <button onClick={handleClick}>
+            Next anecdote
+        </button>
+    )
+}
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
