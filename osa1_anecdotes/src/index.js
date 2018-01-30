@@ -2,26 +2,48 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selected: 0
+    constructor(props) {
+        super(props)
+        this.state = {
+            selected: 0,
+            votes: []
+        }
     }
-  }
 
-  randomizeAnecdote = () => {
-    this.setState((prevState) => ({
-        selected: Math.floor(Math.random()*this.props.anecdotes.length)
-    }));
-  }
+    randomizeAnecdote = () => {
+        this.setState((prevState) => ({
+            selected: Math.floor(Math.random()*this.props.anecdotes.length)
+        }));
+    }
+
+    voteAnecdote = (anecdote) => {
+        return () => {
+            const copyVotes = {...this.state.votes}
+
+            if (isNaN(copyVotes[anecdote])) {
+                copyVotes[anecdote] = 1;
+            } else {
+                copyVotes[anecdote] += 1;
+            }
+    
+            this.setState({
+                votes: copyVotes
+            });
+    
+        }
+
+    }
 
 
     render() {
+        console.log("render sel: ", this.state.selected);
         return (
             <div>
                 <div>{this.props.anecdotes[this.state.selected]}</div>
+                <div>Has {this.state.votes[this.state.selected]} votes</div>
                 <div>
                     <RandomizeButton handleClick={this.randomizeAnecdote} />
+                    <VotingButton handleClick={this.voteAnecdote(this.state.selected)} />
                 </div>
             </div>
         )
@@ -44,6 +66,17 @@ const RandomizeButton = ({handleClick}) => {
         </button>
     )
 }
+
+const VotingButton = ({handleClick}) => {
+    return (
+        <button onClick={handleClick}>
+            Vote
+        </button>
+    )
+}
+
+
+
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
