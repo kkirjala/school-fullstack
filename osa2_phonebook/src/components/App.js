@@ -6,14 +6,16 @@ class App extends React.Component {
     super(props)
     this.state = {
       persons: [
-        { 
-            name: 'Arto Hellas',
-            phoneNumber: '050-11122233' 
-        }
+        { name: 'Arto Hellas', phoneNumber: '040-123456' },
+        { name: 'Martti Tienari', phoneNumber: '040-123456' },
+        { name: 'Arto Järvinen', phoneNumber: '040-123456' },
+        { name: 'Lea Kutvonen', phoneNumber: '040-123456' }
       ],
 
       newName: '',
       newNumber: '',
+
+      searchFilter: '',
     }
   }
 
@@ -49,7 +51,7 @@ class App extends React.Component {
 
   }
 
-  handleNameInputChange = (event) => {
+    handleNameInputChange = (event) => {
         this.setState({
             newName: event.target.value
         })
@@ -58,38 +60,66 @@ class App extends React.Component {
     handleNumberInputChange = (event) => {
         this.setState({
             newNumber: event.target.value
-            })
+        })
     }
 
-
+    handleSearchFilterChange = (event) => {
+        this.setState({
+            searchFilter: event.target.value
+        })
+    }
 
     render() {
+
+
+        const personsToShow =
+            !this.state.searchFilter ?
+                this.state.persons :
+                this.state.persons
+                    .filter(person => person.name.indexOf(this.state.searchFilter) !== -1)
+
         return (
         <div>
             <h2>Puhelinluettelo</h2>
+
+
+            <div>
+                
+                <form>
+                rajaa näytettäviä:
+                    <input
+                            value={this.state.searchFilter}
+                            onChange={this.handleSearchFilterChange}
+                        />
+                </form>
+
+            </div>
+
+            <h3>Lisää uusi numero</h3>
+
             <form onSubmit={this.addPhoneNumber}>
-            <div>
                 <div>
-                    nimi:           
-                    <input
-                        value={this.state.newName}
-                        onChange={this.handleNameInputChange}
-                    />
+                    <div>
+                        nimi:           
+                        <input
+                            value={this.state.newName}
+                            onChange={this.handleNameInputChange}
+                        />
+                    </div>
+                    <div>
+                        numero:
+                        <input
+                            value={this.state.newNumber}
+                            onChange={this.handleNumberInputChange}
+                        />
+                    </div>
                 </div>
                 <div>
-                    numero:
-                    <input
-                        value={this.state.newNumber}
-                        onChange={this.handleNumberInputChange}
-                    />
+                    <button type="submit">lisää</button>
                 </div>
-            </div>
-            <div>
-                <button type="submit">lisää</button>
-            </div>
             </form>
             <h2>Numerot</h2>
-                <PhoneNumbers persons={this.state.persons} />
+                <PhoneNumbers persons={personsToShow} />
             
         </div>
         )
