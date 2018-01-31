@@ -7,11 +7,13 @@ class App extends React.Component {
     this.state = {
       persons: [
         { 
-            name: 'Arto Hellas' 
+            name: 'Arto Hellas',
+            phoneNumber: '050-11122233' 
         }
       ],
 
       newName: '',
+      newNumber: '',
     }
   }
 
@@ -21,6 +23,7 @@ class App extends React.Component {
 
     let additionalPerson = {
         name: this.state.newName,
+        phoneNumber: this.state.newNumber,
     }
 
     // duplicate check
@@ -30,7 +33,8 @@ class App extends React.Component {
 
     if (duplicateEntryIndex !== -1 ) {
         this.setState({
-            newName: ''
+            newName: '',
+            newNumber: ''
         })
         return;      
     }
@@ -39,40 +43,57 @@ class App extends React.Component {
 
     this.setState({
         persons: newPersons,
-        newName: ''
+        newName: '',
+        newNumber: '',
     })
 
   }
 
-  handleInputChange = (event) => {
-      this.setState({
-          newName: event.target.value
-      })
-  }
+  handleNameInputChange = (event) => {
+        this.setState({
+            newName: event.target.value
+        })
+    }
+
+    handleNumberInputChange = (event) => {
+        this.setState({
+            newNumber: event.target.value
+            })
+    }
 
 
-  render() {
-    return (
-      <div>
-        <h2>Puhelinluettelo</h2>
-        <form onSubmit={this.addPhoneNumber}>
-          <div>
-            nimi:           
-            <input
-                value={this.state.newName}
-                onChange={this.handleInputChange}
-            />
-          </div>
-          <div>
-            <button type="submit">lisää</button>
-          </div>
-        </form>
-        <h2>Numerot</h2>
-            <PhoneNumbers persons={this.state.persons} />
-        
-      </div>
-    )
-  }
+
+    render() {
+        return (
+        <div>
+            <h2>Puhelinluettelo</h2>
+            <form onSubmit={this.addPhoneNumber}>
+            <div>
+                <div>
+                    nimi:           
+                    <input
+                        value={this.state.newName}
+                        onChange={this.handleNameInputChange}
+                    />
+                </div>
+                <div>
+                    numero:
+                    <input
+                        value={this.state.newNumber}
+                        onChange={this.handleNumberInputChange}
+                    />
+                </div>
+            </div>
+            <div>
+                <button type="submit">lisää</button>
+            </div>
+            </form>
+            <h2>Numerot</h2>
+                <PhoneNumbers persons={this.state.persons} />
+            
+        </div>
+        )
+    }
 }
 
 export default App
