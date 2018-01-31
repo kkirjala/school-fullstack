@@ -18,8 +18,21 @@ class App extends React.Component {
   addPhoneNumber = (event) => {
     event.preventDefault()
 
-    const additionalPerson = {
+
+    let additionalPerson = {
         name: this.state.newName,
+    }
+
+    // duplicate check
+    const duplicateEntryIndex = this.state.persons
+        .map((person) => person.name)
+        .indexOf(this.state.newName)
+
+    if (duplicateEntryIndex !== -1 ) {
+        this.setState({
+            newName: ''
+        })
+        return;      
     }
 
     const newPersons = this.state.persons.concat(additionalPerson)
