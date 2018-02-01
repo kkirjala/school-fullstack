@@ -1,24 +1,23 @@
 import React from 'react';
 
-const PhoneNumbers = ({persons}) => {
+const Countries = ({countries}) => {
    
     return (
-        persons.map((person) => 
-            <PhoneNumber 
-                key={person.name} 
-                name={person.name} 
-                phoneNumber={person.phoneNumber}
+        countries.map((country) => 
+            <Country 
+                key={country.name} 
+                name={country.name} 
             />
         )
     )
 }
 
-const PhoneNumber = ({name, phoneNumber}) => {
+const Country = ({name}) => {
 
 
     return (
-        <div>{name} ({phoneNumber})</div>
+        <div>{name}</div>
     )
 }
 
-export default PhoneNumbers
+export default Countries
