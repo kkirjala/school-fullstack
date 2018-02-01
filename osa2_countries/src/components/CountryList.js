@@ -1,24 +1,32 @@
 import React from 'react';
+import CountryDetails from './CountryDetails';
 
-const Countries = ({countries}) => {
+const Countries = ({countries, handleClick}) => {
    
-    return (
-        countries.map((country) => 
-            <Country 
-                key={country.name} 
-                name={country.name} 
-            />
+    // detailed view with full info if just 1 country to display
+    if (countries.length === 1) {
+        return (
+            <CountryDetails country={countries[0]} />
         )
-    )
+    } else {
+        return (
+            countries.map((country) => 
+                <CountryListEntry 
+                    key={country.name} 
+                    name={country.name} 
+                    handleClick={handleClick}
+            />)
+
+        )
+    }
+
 }
 
-const Country = ({name}) => {
-
+const CountryListEntry = ({name, handleClick}) => {
     return (
-        <div>{name}</div>
+        <div onClick={() => handleClick(name)}>{name}</div>
     )
 }
-
 
 
 export default Countries
