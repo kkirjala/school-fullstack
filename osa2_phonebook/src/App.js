@@ -1,6 +1,6 @@
 import React from 'react';
-import PhoneNumbers from './components/PhoneNumbers';
-import axios from 'axios'
+import PersonList from './components/PersonList';
+import persons from './services/persons';
 
 
 class App extends React.Component {
@@ -18,17 +18,20 @@ class App extends React.Component {
 
     componentWillMount() {
         
-        axios
-          .get('http://localhost:3001/persons')
-          .then(response => {
-            this.setState({ persons: response.data })
-        })
+        persons
+            .getAll()
+            .then(persons => {
+                this.setState({
+                    persons
+                })
+            })
+
     }
 
-    addPhoneNumber = (event) => {
+    addPerson = (event) => {
         event.preventDefault()
 
-        let additionalPerson = {
+        const additionalPerson = {
             name: this.state.newName,
             phoneNumber: this.state.newNumber,
         }
@@ -41,95 +44,116 @@ class App extends React.Component {
         if (duplicateEntryIndex !== -1 ) {
             this.setState({
                 newName: '',
-                newNumber: ''
+                newNumber: '',
             })
             return;      
         }
 
-        axios
-            .post('http://localhost:3001/persons', additionalPerson)
-            .then(response => {
+        persons
+            .createPerson(additionalPerson)
+            .then(newPerson => {
                 this.setState({
-                    persons: this.state.persons.concat(response.data),
+                    persons: this.state.persons.concat(newPerson),
                     newName: '',
                     newNumber: '',
                 })
             })
+    }
+
+    deletePerson = (id) => {
+
+        const deleteName = this.state.persons
+            .find(person => person.id === id)
+            .name
+
+        if (window.confirm('Poistetaanko ' + deleteName + ' ?')) {
+            persons
+            .deletePerson(id)
+            .then(deletedPerson => {
+                this.setState({
+                    persons: this.state.persons.filter(person => person.id !== id)
+                })
+            })
+        }
 
     }
 
-        handleNameInputChange = (event) => {
-            this.setState({
-                newName: event.target.value
-            })
-        }
 
-        handleNumberInputChange = (event) => {
-            this.setState({
-                newNumber: event.target.value
-            })
-        }
+    handleNameInputChange = (event) => {
+        this.setState({
+            newName: event.target.value
+        })
+    }
 
-        handleSearchFilterChange = (event) => {
-            this.setState({
-                searchFilter: event.target.value
-            })
-        }
+    handleNumberInputChange = (event) => {
+        this.setState({
+            newNumber: event.target.value
+        })
+    }
 
-        render() {
+    handleSearchFilterChange = (event) => {
+        this.setState({
+            searchFilter: event.target.value
+        })
+    }
 
-            const personsToShow =
-                !this.state.searchFilter ?
-                    this.state.persons :
-                    this.state.persons
-                        .filter(person => person.name.indexOf(this.state.searchFilter) !== -1)
+    render() {
 
-            return (
+        const personsToShow =
+            !this.state.searchFilter ?
+                this.state.persons :
+                this.state.persons
+                    .filter(person => person.name.indexOf(this.state.searchFilter) !== -1)
+
+        return (
+        <div>
+            <h2>Puhelinluettelo</h2>
+
+
             <div>
-                <h2>Puhelinluettelo</h2>
-
-
-                <div>
-                    
-                    <form>
-                    rajaa näytettäviä:
-                        <input
-                                value={this.state.searchFilter}
-                                onChange={this.handleSearchFilterChange}
-                            />
-                    </form>
-
-                </div>
-
-                <h3>Lisää uusi numero</h3>
-
-                <form onSubmit={this.addPhoneNumber}>
-                    <div>
-                        <div>
-                            nimi:           
-                            <input
-                                value={this.state.newName}
-                                onChange={this.handleNameInputChange}
-                            />
-                        </div>
-                        <div>
-                            numero:
-                            <input
-                                value={this.state.newNumber}
-                                onChange={this.handleNumberInputChange}
-                            />
-                        </div>
-                    </div>
-                    <div>
-                        <button type="submit">lisää</button>
-                    </div>
-                </form>
-                <h2>Numerot</h2>
-                    <PhoneNumbers persons={personsToShow} />
                 
+                <form>
+                rajaa näytettäviä:
+                    <input
+                            value={this.state.searchFilter}
+                            onChange={this.handleSearchFilterChange}
+                        />
+                </form>
+
             </div>
-            )
-        }
+
+            <h3>Lisää uusi numero</h3>
+
+            <form onSubmit={this.addPerson}>
+                <div>
+                    <div>
+                        nimi:           
+                        <input
+                            value={this.state.newName}
+                            onChange={this.handleNameInputChange}
+                        />
+                    </div>
+                    <div>
+                        numero:
+                        <input
+                            value={this.state.newNumber}
+                            onChange={this.handleNumberInputChange}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <button type="submit">lisää</button>
+                </div>
+            </form>
+            <h2>Numerot</h2>
+                <PersonList 
+                    persons={personsToShow} 
+                    handleClick={this.deletePerson}
+                />
+            
+        </div>
+        )
+    }
 }
 
 export default App
