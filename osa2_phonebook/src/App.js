@@ -46,13 +46,15 @@ class App extends React.Component {
             return;      
         }
 
-        const newPersons = this.state.persons.concat(additionalPerson)
-
-        this.setState({
-            persons: newPersons,
-            newName: '',
-            newNumber: '',
-        })
+        axios
+            .post('http://localhost:3001/persons', additionalPerson)
+            .then(response => {
+                this.setState({
+                    persons: this.state.persons.concat(response.data),
+                    newName: '',
+                    newNumber: '',
+                })
+            })
 
     }
 
@@ -75,8 +77,6 @@ class App extends React.Component {
         }
 
         render() {
-            console.log(this.state.persons)
-
 
             const personsToShow =
                 !this.state.searchFilter ?
