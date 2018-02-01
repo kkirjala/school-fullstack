@@ -1,8 +1,6 @@
 import React from 'react';
 import axios from 'axios'
 import CountryList from './components/CountryList';
-import CountryDetails from './components/CountryDetails';
-
 
 class App extends React.Component {
     constructor(props) {
@@ -15,8 +13,7 @@ class App extends React.Component {
 
     }
 
-    componentWillMount() {
-        
+    componentWillMount() {        
         axios
           .get('https://restcountries.eu/rest/v2/all')
           .then(response => {
@@ -31,10 +28,13 @@ class App extends React.Component {
         })
     }
 
+    handleCountryNameClick = (name) => {
+        this.setState({
+            searchFilter: name.toLowerCase()
+        })
+    }
+
     render() {
-        console.log(this.state.countries)
-
-
         const countryDisplay = () => {
 
             const countriesToShow =
@@ -54,18 +54,18 @@ class App extends React.Component {
         
             if (countriesToShow.length > 10) {
                 return (
+                    
                     <div>Too many matches. Please refine your search.</div>
                 )
-            } else if (countriesToShow.length > 1) {
+            } else if (countriesToShow.length >= 1) {
                 return (
-                    <CountryList countries={countriesToShow} />
-                )
-            } else {
-                return (
-                    <CountryDetails country={countriesToShow} />
+                    
+                    <CountryList 
+                        countries={countriesToShow} 
+                        handleClick={this.handleCountryNameClick}
+                    />
                 )
             }
-
         }
 
         return (
