@@ -14,10 +14,11 @@ const Countries = ({countries}) => {
 
 const Country = ({name}) => {
 
-
     return (
         <div>{name}</div>
     )
 }
+
+
 
 export default Countries
