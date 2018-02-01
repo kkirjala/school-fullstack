@@ -1,5 +1,5 @@
 import React from 'react';
-import PhoneNumbers from './PhoneNumbers';
+import PhoneNumbers from './components/PhoneNumbers';
 import axios from 'axios'
 
 
