@@ -1,6 +1,7 @@
 import React from 'react';
-import Countries from './Countries';
 import axios from 'axios'
+import CountryList from './components/CountryList';
+import CountryDetails from './components/CountryDetails';
 
 
 class App extends React.Component {
@@ -26,7 +27,7 @@ class App extends React.Component {
 
     handleSearchFilterChange = (event) => {
         this.setState({
-            searchFilter: event.target.value
+            searchFilter: event.target.value.toLowerCase()
         })
     }
 
@@ -34,11 +35,38 @@ class App extends React.Component {
         console.log(this.state.countries)
 
 
-        const countriesToShow =
+        const countryDisplay = () => {
+
+            const countriesToShow =
             !this.state.searchFilter ?
                 this.state.countries :
                 this.state.countries
-                    .filter(country => country.name.indexOf(this.state.searchFilter) !== -1)
+                    .filter(country => {
+                        const lowerCaseName = country.name.toLowerCase()
+                        return (                            
+                            lowerCaseName.indexOf(this.state.searchFilter) !== -1
+                        )
+                    })
+
+            // if more than 10 matches, don't show anything
+            // more than 1 but less than 10, show a list
+            // 1 -> detailed country info
+        
+            if (countriesToShow.length > 10) {
+                return (
+                    <div>Too many matches. Please refine your search.</div>
+                )
+            } else if (countriesToShow.length > 1) {
+                return (
+                    <CountryList countries={countriesToShow} />
+                )
+            } else {
+                return (
+                    <CountryDetails country={countriesToShow} />
+                )
+            }
+
+        }
 
         return (
             <div>
@@ -56,8 +84,7 @@ class App extends React.Component {
 
                 </div>
 
-                <h2>Countries</h2>
-                    <Countries countries={countriesToShow} />
+                {countryDisplay()}
                 
             </div>
         )
