@@ -2,10 +2,7 @@ import React from 'react';
 
 const CountryDetails = ({country}) => {
 
-    console.log(country)
-
-    return (
-    
+    return (   
         <div>
             <h2>{country.name} / {country.nativeName}</h2>
             <div>

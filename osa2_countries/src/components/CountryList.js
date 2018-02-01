@@ -15,8 +15,8 @@ const Countries = ({countries, handleClick}) => {
                     key={country.name} 
                     name={country.name} 
                     handleClick={handleClick}
-            />)
-
+                />
+            )
         )
     }
 
