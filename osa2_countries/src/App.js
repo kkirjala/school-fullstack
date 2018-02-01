@@ -41,26 +41,25 @@ class App extends React.Component {
                     .filter(country => country.name.indexOf(this.state.searchFilter) !== -1)
 
         return (
-        <div>
-            <h2>Country list</h2>
-
             <div>
+                <h2>Country list</h2>
+
+                <div>
+                    
+                    <form>
+                    Find countries:
+                        <input
+                                value={this.state.searchFilter}
+                                onChange={this.handleSearchFilterChange}
+                            />
+                    </form>
+
+                </div>
+
+                <h2>Countries</h2>
+                    <Countries countries={countriesToShow} />
                 
-                <form>
-                Find countries:
-                    <input
-                            value={this.state.searchFilter}
-                            onChange={this.handleSearchFilterChange}
-                        />
-                </form>
-
             </div>
-
-            </form>
-            <h2>Countries</h2>
-                <Countries persons={countriesToShow} />
-            
-        </div>
         )
     }
 
