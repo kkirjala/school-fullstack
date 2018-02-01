@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# application database (dummy data, mostly)
+osa2_phonebook/db.json
