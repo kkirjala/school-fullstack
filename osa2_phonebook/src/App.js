@@ -1,5 +1,6 @@
 import React from 'react';
 import PersonList from './components/PersonList';
+import Notification from './components/Notification';
 import persons from './services/persons';
 
 
@@ -7,12 +8,14 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-        persons: [],
+            persons: [],
 
-        newName: '',
-        newNumber: '',
+            newName: '',
+            newNumber: '',
 
-        searchFilter: '',
+            searchFilter: '',
+
+            error: null,
         }
     }
 
@@ -24,6 +27,18 @@ class App extends React.Component {
                 persons
             })
         })
+
+    }
+
+    displayErrorMessage(errorMsg, notificationDuration) {
+        this.setState({ 
+            error: errorMsg
+        })
+        setTimeout(() => {
+            this.setState({
+                error: null
+            })
+        }, notificationDuration)
     }
 
     handleAddPerson = (event) => {
@@ -47,7 +62,7 @@ class App extends React.Component {
 
             const duplicatePerson = this.state.persons[duplicatePersonIndex]
 
-            // replace/update info?
+            // replace/update existing info?
             if (window.confirm(duplicatePerson.name 
                 + ' on jo luettelossa. Korvataanko vanha numero uudella?')) {
                 persons
@@ -63,12 +78,13 @@ class App extends React.Component {
                     })
                     .catch(error => {
                         // exception: person was removed before/during update,
-                        // remove from list and add a new entry
+                        // remove from list and display error message.
                         this.setState({ 
                             persons: this.state.persons
                                 .filter(person => person.id !== duplicatePerson.id) 
                             })
-                        this.addPerson()
+                        this.displayErrorMessage(`Henkilöä ${duplicatePerson.name} ei löydy palvelimelta`, 5000)
+
                     })
             }
 
@@ -139,6 +155,7 @@ class App extends React.Component {
         <div>
             <h2>Puhelinluettelo</h2>
 
+            <Notification message={this.state.error} notificationType="error" />
 
             <div>
                 
