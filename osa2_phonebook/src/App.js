@@ -103,7 +103,9 @@ class App extends React.Component {
             !this.state.searchFilter ?
                 this.state.persons :
                 this.state.persons
-                    .filter(person => person.name.indexOf(this.state.searchFilter) !== -1)
+                    .filter(person => person.name
+                            .toLowerCase()
+                            .indexOf(this.state.searchFilter.toLowerCase()) !== -1)
 
         return (
         <div>
