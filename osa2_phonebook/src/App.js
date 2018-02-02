@@ -31,7 +31,7 @@ class App extends React.Component {
     addPerson = (event) => {
         event.preventDefault()
 
-        const additionalPerson = {
+        const newPerson = {
             name: this.state.newName,
             phoneNumber: this.state.newNumber,
         }
@@ -42,6 +42,22 @@ class App extends React.Component {
             .indexOf(this.state.newName)
 
         if (duplicateEntryIndex !== -1 ) {
+
+            const duplicatePerson = this.state.persons[duplicateEntryIndex]
+
+            if (window.confirm(duplicatePerson.name 
+                + ' on jo luettelossa. Korvataanko vanha numero uudella?')) {
+                persons
+                    .updatePerson(duplicatePerson.id, newPerson)
+                    .then(updatedPerson => {
+                        this.setState({
+                            persons: this.state.persons
+                                .map(person => 
+                                    person.id !== duplicatePerson.id ? person : updatedPerson)
+                        })
+                    })
+            }
+
             this.setState({
                 newName: '',
                 newNumber: '',
@@ -50,7 +66,7 @@ class App extends React.Component {
         }
 
         persons
-            .createPerson(additionalPerson)
+            .createPerson(newPerson)
             .then(newPerson => {
                 this.setState({
                     persons: this.state.persons.concat(newPerson),
