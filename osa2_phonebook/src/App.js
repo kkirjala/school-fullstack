@@ -17,7 +17,10 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        
+        this.refreshPersonsList()
+    }
+
+    refreshPersonsList() {
         persons
             .getAll()
             .then(persons => {
@@ -25,11 +28,14 @@ class App extends React.Component {
                     persons
                 })
             })
-
     }
 
-    addPerson = (event) => {
+    handleAddPerson = (event) => {
         event.preventDefault()
+        this.addPerson()
+    }
+
+    addPerson() {
 
         const newPerson = {
             name: this.state.newName,
@@ -37,14 +43,15 @@ class App extends React.Component {
         }
 
         // duplicate check
-        const duplicateEntryIndex = this.state.persons
+        const duplicatePersonIndex = this.state.persons
             .map((person) => person.name)
             .indexOf(this.state.newName)
 
-        if (duplicateEntryIndex !== -1 ) {
+        if (duplicatePersonIndex !== -1 ) {
 
-            const duplicatePerson = this.state.persons[duplicateEntryIndex]
+            const duplicatePerson = this.state.persons[duplicatePersonIndex]
 
+            // replace/update info?
             if (window.confirm(duplicatePerson.name 
                 + ' on jo luettelossa. Korvataanko vanha numero uudella?')) {
                 persons
@@ -53,27 +60,37 @@ class App extends React.Component {
                         this.setState({
                             persons: this.state.persons
                                 .map(person => 
-                                    person.id !== duplicatePerson.id ? person : updatedPerson)
+                                    person.id !== duplicatePerson.id ? person : updatedPerson),
+                            newName: '',
+                            newNumber: '',
                         })
+                        return;
+                    })
+                    .catch(error => {
+                        // exception: person was removed before/during update,
+                        // remove from list and add a new entry
+                        this.setState({ 
+                            persons: this.state.persons
+                                .filter(person => person.id !== duplicatePerson.id) 
+                            })
+                        this.addPerson()
                     })
             }
 
-            this.setState({
-                newName: '',
-                newNumber: '',
-            })
-            return;      
+    
+        } else {
+            persons
+                .createPerson(newPerson)
+                .then(newPerson => {
+                    this.setState({
+                        persons: this.state.persons.concat(newPerson),
+                        newName: '',
+                        newNumber: '',
+                    })
+                })
         }
 
-        persons
-            .createPerson(newPerson)
-            .then(newPerson => {
-                this.setState({
-                    persons: this.state.persons.concat(newPerson),
-                    newName: '',
-                    newNumber: '',
-                })
-            })
+
     }
 
     deletePerson = (id) => {
@@ -142,7 +159,7 @@ class App extends React.Component {
 
             <h3>Lisää uusi numero</h3>
 
-            <form onSubmit={this.addPerson}>
+            <form onSubmit={this.handleAddPerson}>
                 <div>
                     <div>
                         nimi:           
