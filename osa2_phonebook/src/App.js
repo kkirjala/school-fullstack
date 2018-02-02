@@ -40,8 +40,8 @@ class App extends React.Component {
 
         // duplicate check
         const duplicatePersonIndex = this.state.persons
-            .map((person) => person.name)
-            .indexOf(this.state.newName)
+            .map((person) => person.name.toLowerCase())
+            .indexOf(this.state.newName.toLowerCase())
 
         if (duplicatePersonIndex !== -1 ) {
 
@@ -60,7 +60,6 @@ class App extends React.Component {
                             newName: '',
                             newNumber: '',
                         })
-                        return;
                     })
                     .catch(error => {
                         // exception: person was removed before/during update,
