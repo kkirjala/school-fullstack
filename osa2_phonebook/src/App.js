@@ -17,17 +17,13 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        this.refreshPersonsList()
-    }
-
-    refreshPersonsList() {
         persons
-            .getAll()
-            .then(persons => {
-                this.setState({
-                    persons
-                })
+        .getAll()
+        .then(persons => {
+            this.setState({
+                persons
             })
+        })
     }
 
     handleAddPerson = (event) => {
