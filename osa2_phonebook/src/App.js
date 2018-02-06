@@ -71,7 +71,7 @@ class App extends React.Component {
                         this.setState({
                             persons: this.state.persons
                                 .map(person => 
-                                    person.id !== duplicatePerson.id ? person : updatedPerson),
+                                    person.id !== duplicatePerson.id ? person : newPerson),
                             newName: '',
                             newNumber: '',
                         })
