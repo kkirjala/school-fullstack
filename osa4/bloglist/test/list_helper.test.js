@@ -92,3 +92,64 @@ describe('total likes', () => {
 
 	})
 })
+
+describe('favorite blogs', () => {
+	test('empty list returns null', () => {
+		const emptyList = []
+
+		const result = listHelper.favoriteBlog(emptyList)
+		expect(result).toBe(null)
+	})
+
+	test('a list with one blog returns the one blog', () => {
+		const singleList = [
+			{
+				_id: '5a422a851b54a676234d17f7',
+				title: 'React patterns',
+				author: 'Michael Chan',
+				url: 'https://reactpatterns.com/',
+				likes: 7,
+				__v: 0
+			}
+		]
+
+		const result = listHelper.favoriteBlog(singleList)
+
+		const correctResult = {'author': 'Michael Chan', 'likes': 7, 'title': 'React patterns'}
+		expect(result).toEqual(correctResult)
+	})
+
+	test('return the blog with most likes', () => {
+		const multipleBlogs = [
+			{
+				_id: '5a422a851b54a676234d17f7',
+				title: 'React patterns',
+				author: 'Michael Chan',
+				url: 'https://reactpatterns.com/',
+				likes: 7,
+				__v: 0
+			},
+			{
+				_id: '5a422aa71b54a676234d17f8',
+				title: 'Go To Statement Considered Harmful',
+				author: 'Edsger W. Dijkstra',
+				url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+				likes: 15,
+				__v: 0
+			},
+			{
+				_id: '5a422b891b54a676234d17fa',
+				title: 'First class tests',
+				author: 'Robert C. Martin',
+				url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+				likes: 10,
+				__v: 0
+			}
+		]
+
+		const result = listHelper.favoriteBlog(multipleBlogs)
+		const correctResult = {'author': 'Edsger W. Dijkstra', 'likes': 15, 'title': 'Go To Statement Considered Harmful'}
+
+		expect(result).toEqual(correctResult)
+	})
+})
