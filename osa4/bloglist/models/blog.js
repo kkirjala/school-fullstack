@@ -1,11 +1,5 @@
 const mongoose = require('mongoose')
 
-require('dotenv').config()
-const mongoUrl = process.env.MONGODB_URI
-
-mongoose.connect(mongoUrl)
-mongoose.Promise = global.Promise
-
 const blogSchema = mongoose.Schema(
 	{
 		title: String,
