@@ -65,16 +65,15 @@ const mostLikes = (blogs) => {
 		.sort((a, b) => {
 			return (
 				blogs
-					.filter(blog => blog.author === a) // only author A
-					.map(blog => blog.likes) // build an array with likes by author A
-					.reduce((total, currBlog) => { return total + currBlog }, 0) // calculate total for author A
-				- blogs // compare with equal calculation results of author B
-					.filter(blog => blog.author === b)
+					.filter(blog => blog.author === b) // only author B
+					.map(blog => blog.likes) // build an array with likes by author B
+					.reduce((total, currBlog) => { return total + currBlog }, 0) // calculate total for author B
+				- blogs // compare with equal calculation results of author A
+					.filter(blog => blog.author === a)
 					.map(blog => blog.likes)
 					.reduce((total, currBlog) => { return total + currBlog }, 0)
 			)
-		})
-		.pop()
+		})[0]
 
 	// TODO: remove copy-paste (see above)
 	const amountLikesByAuthor = blogs
