@@ -87,8 +87,6 @@ describe('create blogs', () => {
         
     })
 
-
-
 })
 
 describe('delete blogs', () => {
@@ -124,7 +122,6 @@ describe('delete blogs', () => {
         
     })
 
-    
 })
 
 afterAll(() => {
