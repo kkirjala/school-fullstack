@@ -16,7 +16,9 @@ const favoriteBlog = (blogs) => {
 		return null
 	}
 
-	const favoriteBlog = blogs
+	const blogsCopy = [...blogs] // in order to avoid mutating the original array
+
+	const favoriteBlog = blogsCopy
 		.sort((a, b) => a.likes - b.likes) 
 		.pop()
 
@@ -28,6 +30,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
+	
 	if (blogs == null || blogs.length == 0) {
 		return null
 	}
