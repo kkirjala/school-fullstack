@@ -124,6 +124,40 @@ describe('delete blogs', () => {
 
 })
 
+describe('modify blogs', () => {
+
+    test('Modifying blog author and likes', async () => {
+
+        const initialBlogs = await testHelper.blogsInDb()
+
+        const originalBlog = initialBlogs[Math.floor(initialBlogs.length / 2)] // pick a blog from middle
+
+        const modifiedBlog = {
+            title: originalBlog.title,
+            author: 'modified author',
+            url: originalBlog.url,
+            likes: originalBlog.likes + 666
+        }
+
+        await api
+            .put(`/api/blogs/${originalBlog._id}`)
+            .send(modifiedBlog)
+            .expect(204)
+
+        const currentBlogs = await testHelper.blogsInDb()
+
+        const comparedBlog = currentBlogs[Math.floor(initialBlogs.length / 2)]
+
+        expect(currentBlogs.length).toBe(initialBlogs.length)
+        expect(comparedBlog.title).toBe(originalBlog.title)
+        expect(comparedBlog.author).toBe('modified author')
+        expect(comparedBlog.url).toBe(originalBlog.url)
+        expect(comparedBlog.likes).toBe(originalBlog.likes + 666)
+        
+    })
+
+})
+
 afterAll(() => {
   server.close()
 })
