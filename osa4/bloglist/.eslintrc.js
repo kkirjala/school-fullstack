@@ -21,5 +21,10 @@ module.exports = {
             "error",
             "never"
         ]
+    },
+    "globals": {
+        "test": true,
+        "expect": true,
+        "describe": true
     }
 };
