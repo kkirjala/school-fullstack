@@ -107,6 +107,15 @@ describe('create blogs', () => {
 
     })
 
+    test('Creating a new blog without title and url', async () => {
+        await api
+            .post('/api/blogs')
+            .send({ author: 'BlogTester', likes: 10 })
+            .expect(400)
+    })
+
+
+
 })
 
 afterAll(() => {

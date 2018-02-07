@@ -17,6 +17,9 @@ blogsRouter.post('/', (request, response) => {
 		.then(result => {
 			response.status(201).json(result)
 		})
+		.catch(err => {
+			response.status(400).json({ error: err })
+		})
 })
 
 module.exports = blogsRouter
