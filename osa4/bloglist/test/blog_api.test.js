@@ -89,6 +89,24 @@ describe('create blogs', () => {
 
     })
 
+    test('Creating a new blog post with no likes', async () => {
+        await api
+            .post('/api/blogs')
+            .send({ title: 'Subject', author: 'BlogTester', url: 'http://localhost' })
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+            
+        const response = await api
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        const lastBlog = response.body.pop()
+
+        expect(lastBlog.likes).toBe(0)
+
+    })
+
 })
 
 afterAll(() => {
