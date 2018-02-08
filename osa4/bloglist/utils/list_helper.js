@@ -55,7 +55,7 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
 
-	if (blogs == null || blogs.length == 0) {
+	if (blogs === null || blogs.length === 0) {
 		return null
 	}
 	
@@ -67,11 +67,11 @@ const mostLikes = (blogs) => {
 				blogs
 					.filter(blog => blog.author === b) // only author B
 					.map(blog => blog.likes) // build an array with likes by author B
-					.reduce((total, currBlog) => { return total + currBlog }, 0) // calculate total for author B
+					.reduce((total, currBlog) => total + currBlog, 0) // calculate total for author B
 				- blogs // compare with equal calculation results of author A
 					.filter(blog => blog.author === a)
 					.map(blog => blog.likes)
-					.reduce((total, currBlog) => { return total + currBlog }, 0)
+					.reduce((total, currBlog) => total + currBlog, 0)
 			)
 		})[0]
 
@@ -79,7 +79,7 @@ const mostLikes = (blogs) => {
 	const amountLikesByAuthor = blogs
 		.filter(blog => blog.author === mostLikedAuthor)
 		.map(blog => blog.likes)
-		.reduce((total, currBlog) => { return total + currBlog }, 0)
+		.reduce((total, currBlog) => total + currBlog, 0)
 
 	const author = { author: mostLikedAuthor, likes: amountLikesByAuthor }
 	return author
