@@ -5,6 +5,7 @@ const User = require('../models/user')
 usersRouter.get('/', (request, response) => {
 	User
 		.find({})
+		.populate('blogs', { _id: 1, title: 1, author: 1, url: 1, likes: 1 })
 		.then(user => {
 			response
 				.status(200)

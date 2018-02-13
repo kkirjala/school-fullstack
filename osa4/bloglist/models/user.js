@@ -22,7 +22,10 @@ const userSchema = new mongoose.Schema({
 			const hash = bcrypt.hashSync(value, salt)
 			return value.length <= 3 ? value : hash // minimum pw length validation
 		}	
-	}
+	},
+	blogs: [
+		{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }
+	]
 })
 
 userSchema.statics.format = (user) => {
@@ -30,7 +33,7 @@ userSchema.statics.format = (user) => {
 		id: user.id,
 		username: user.username,
 		name: user.name,
-		notes: user.notes
+		blogs: user.blogs
 	}
 }
 
