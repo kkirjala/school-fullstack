@@ -5,8 +5,10 @@ const User = require('../models/user')
 usersRouter.get('/', (request, response) => {
 	User
 		.find({})
-		.then(users => {
-			response.status(200).json(users)
+		.then(user => {
+			response
+				.status(200)
+				.json(user.map(user => User.format(user)))
 		})
 })
 
@@ -24,7 +26,7 @@ usersRouter.post('/', (request, response) => {
 	user
 		.save()
 		.then(savedUser => {
-			response.status(201).json(savedUser)
+			response.status(201).json(User.format(savedUser))
 		})
 		.catch(err => {
 			response.status(400).json({ error: err })

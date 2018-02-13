@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
-const User = mongoose.model('User', {
+const userSchema = new mongoose.Schema({
 	username: {
 		type: String,
 		unique: true
@@ -21,9 +21,21 @@ const User = mongoose.model('User', {
 			const salt = bcrypt.genSaltSync(10)
 			const hash = bcrypt.hashSync(value, salt)
 			return value.length <= 3 ? value : hash // minimum pw length validation
-		}
-		
+		}	
 	}
 })
+
+userSchema.statics.format = (user) => {
+	return {
+		id: user.id,
+		username: user.username,
+		name: user.name,
+		notes: user.notes
+	}
+}
+
+
+
+const User = mongoose.model('User', userSchema)
 
 module.exports = User
