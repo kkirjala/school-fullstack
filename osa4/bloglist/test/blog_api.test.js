@@ -3,6 +3,7 @@ const { app, server } = require('../index')
 const api = supertest(app)
 const testHelper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 
 beforeAll(async () => {
@@ -12,6 +13,78 @@ beforeAll(async () => {
 	const blogs = testHelper.initialBlogs.map(blog => new Blog(blog))
 	const promiseArray = blogs.map(blog => blog.save()) // all promises in one
 	await Promise.all(promiseArray)
+})
+
+describe('Only two users in db', async () => {
+	
+	beforeAll(async () => {
+		await User.remove({})
+		const users = testHelper.initialUsers.map(user => new User(user))
+		const promiseArray = users.map(user => user.save())
+		promiseArray.push()
+
+		await Promise.all(promiseArray)
+
+	})
+	
+	test('POST /api/users succeeds with a fresh username', async () => {
+		const usersBeforeOperation = await testHelper.usersInDb()
+
+		const newUser = {
+			username: 'testuser',
+			name: 'The very test User',
+			password: 'supersecret'
+		}
+
+		await api
+			.post('/api/users')
+			.send(newUser)
+			.expect(201)
+			.expect('Content-Type', /application\/json/)
+
+		const usersAfterOperation = await testHelper.usersInDb()
+		expect(usersAfterOperation.length).toBe(usersBeforeOperation.length+1)
+		const usernames = usersAfterOperation.map(u => u.username)
+		expect(usernames).toContain(newUser.username)
+	})
+
+	test('POST /api/users will not succeed with a duplicate username', async () => {
+		const usersBeforeOperation = await testHelper.usersInDb()
+
+		const newUser = {
+			username: 'root',
+			password: 'sekret'
+		}
+
+		await api
+			.post('/api/users')
+			.send(newUser)
+			.expect(400)
+			.expect('Content-Type', /application\/json/)
+
+		const usersAfterOperation = await testHelper.usersInDb()
+		expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+	})
+
+	test('POST /api/users will not succeed with short password', async () => {
+		const usersBeforeOperation = await testHelper.usersInDb()
+
+		const newUser = {
+			username: 'shortpassworduser',
+			password: 'se'
+		}
+
+		await api
+			.post('/api/users')
+			.send(newUser)
+			.expect(400)
+			.expect('Content-Type', /application\/json/)
+
+		const usersAfterOperation = await testHelper.usersInDb()
+		expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+	})
+
+
 })
 
 describe('get blogs', () => {
