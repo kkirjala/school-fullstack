@@ -1,6 +1,17 @@
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+
+const getTokenFrom = (request) => {
+	const authorization = request.get('authorization')
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+		return authorization.substring(7)
+	}
+	return null
+}
+
 
 blogsRouter.get('/', (request, response) => {
 	Blog
@@ -14,14 +25,23 @@ blogsRouter.get('/', (request, response) => {
 })
   
 blogsRouter.post('/', async (request, response) => {
-
-	const user = await User.findOne({})
-
-	let blog = new Blog({ user: user._id, ...request.body })
   
 	try {
+
+		const token = getTokenFrom(request)
+		const decodedToken = jwt.verify(token, process.env.BCRYPT_SECRET)
+
+		if (!token || !decodedToken.id) {
+			return response
+				.status(401)
+				.json({ error: 'authentication token missing or invalid' })
+		}
+
+		let blog = new Blog({ user: decodedToken.id, ...request.body }) // userid == tokenid
+
 		const addedPost = await blog.save()
 
+		const user = await User.findOne({ _id: decodedToken.id })
 		user.blogs = user.blogs.concat(addedPost._id) // update blog-to-user "relation"
 		await user.save()
 
@@ -30,6 +50,10 @@ blogsRouter.post('/', async (request, response) => {
 			.json(addedPost)
 
 	} catch (exception) {
+
+		if (exception.name === 'JsonWebTokenError' ) {
+			response.status(401).json({ error: 'authentication token invalid or expired' })
+		}
 
 		response
 			.status(400)
