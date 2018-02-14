@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const tokenExtractor = require('./middlewares/tokenextractor')
 const blogsRouter = require('./controllers/blogs.js')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
@@ -14,6 +15,7 @@ mongoose.Promise = global.Promise
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(tokenExtractor)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
