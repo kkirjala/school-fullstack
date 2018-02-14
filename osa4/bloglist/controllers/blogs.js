@@ -45,16 +45,14 @@ blogsRouter.post('/', async (request, response) => {
 	} catch (exception) {
 
 		if (exception.name === 'JsonWebTokenError' ) {
-			response
+			return response
 				.status(401)
 				.json({ error: 'authentication token invalid or expired' })
-		} else {
-			response
-				.status(400)
-				.json({ error: exception })
 		}
 
-
+		return response
+			.status(400)
+			.json({ error: exception })
 
 	}
 
@@ -62,14 +60,43 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
 
-	const result = await Blog
-		.findByIdAndRemove(request.params.id)
+	try {
 
-	if (result) {
-		response.status(204).send()
-	} else {
-		response.status(404).send()
+		const decodedToken = jwt.verify(request.token, process.env.BCRYPT_SECRET)
+
+		if (!request.token || !decodedToken.id) {
+			return response
+				.status(401)
+				.json({ error: 'authentication token missing or invalid' })
+		}
+	
+		const blog = await Blog
+			.findOneAndRemove({ _id: request.params.id, user: decodedToken.id })
+	
+		if (!blog) { // no matching post found
+			return response
+				.status(404)
+				.json({ error: 'no post found or unauthorized request' })
+		}
+	
+		return response.status(204).send() // successful deletion
+
+	} catch (exception) {
+
+		if (exception.name === 'JsonWebTokenError' ) {
+			return response
+				.status(401)
+				.json({ error: 'authentication token invalid or expired' })
+		}
+
+		return response
+			.status(400)
+			.json({ error: exception })
+		
 	}
+
+
+		
 
 })
 
