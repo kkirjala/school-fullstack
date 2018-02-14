@@ -45,12 +45,16 @@ blogsRouter.post('/', async (request, response) => {
 	} catch (exception) {
 
 		if (exception.name === 'JsonWebTokenError' ) {
-			response.status(401).json({ error: 'authentication token invalid or expired' })
+			response
+				.status(401)
+				.json({ error: 'authentication token invalid or expired' })
+		} else {
+			response
+				.status(400)
+				.json({ error: exception })
 		}
 
-		response
-			.status(400)
-			.json({ error: exception })
+
 
 	}
 
