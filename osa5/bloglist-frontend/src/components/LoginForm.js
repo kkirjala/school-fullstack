@@ -8,6 +8,7 @@ const LoginForm = (props) => (
             käyttäjätunnus
             <input
                 type="text"
+                name="username"
                 value={props.username}
                 onChange={props.handleUsernameChange}
             />
@@ -16,6 +17,7 @@ const LoginForm = (props) => (
             salasana
             <input
                 type="password"
+                name="password"
                 value={props.password}
                 onChange={props.handlePasswordChange}
             />
