@@ -83,7 +83,7 @@ class App extends React.Component {
   blogList = () => (
     <div>
       <h2>blogs</h2>
-      {this.state.blogs.map(blog => 
+      {this.state.blogs.sort((a, b) => b.likes - a.likes).map(blog => 
         <Togglable 
           key={blog.id}
           buttonLabel={blog.title}
@@ -150,8 +150,9 @@ class App extends React.Component {
       // TODO: fix likes amount race condition
       await blogService.update(blog.id, updateBlog)
 
-      let newBlogs = this.state.blogs.filter(b => b.id !== blog.id)
-      newBlogs.push(updateBlog)
+
+      // update view
+      const newBlogs = await blogService.getAll()
 
       this.setState({ 
         blogs: newBlogs,
