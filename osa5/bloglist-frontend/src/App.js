@@ -100,7 +100,7 @@ class App extends React.Component {
         newBlogAuthor: '',
         newBlogTitle: '',
         newBlogUrl: '',
-        notification: 'Blog added successfully'
+        notification: 'Blog "{blog.title}" added successfully'
       })
 
       setTimeout(() => {
