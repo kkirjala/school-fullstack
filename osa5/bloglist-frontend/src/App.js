@@ -80,7 +80,7 @@ class App extends React.Component {
     <div>
       <h2>blogs</h2>
       {this.state.blogs.map(blog => 
-        <Blog key={blog._id} blog={blog}/>
+        <Blog key={blog.id} blog={blog}/>
       )}
     </div>
   )
@@ -124,22 +124,30 @@ class App extends React.Component {
       <h2>Create a new blog</h2>
 
       <form onSubmit={this.handleAddBlog}>
-          <input
-              value={this.state.newBlogTitle}
-              name="newBlogTitle"
-              onChange={this.handleStateFieldChange}
-          />
-          <input
-              value={this.state.newBlogAuthor}
-              name="newBlogAuthor"
-              onChange={this.handleStateFieldChange}
-          />
-          <input
-              value={this.state.newBlogUrl}
-              name="newBlogUrl"
-              onChange={this.handleStateFieldChange}
-          />
+        <div>
+          <div>
+            Title <input
+                value={this.state.newBlogTitle}
+                name="newBlogTitle"
+                onChange={this.handleStateFieldChange}
+            />
+          </div>
+          <div>
+            Author <input
+                value={this.state.newBlogAuthor}
+                name="newBlogAuthor"
+                onChange={this.handleStateFieldChange}
+            />
+          </div>
+          <div>
+            URL <input
+                value={this.state.newBlogUrl}
+                name="newBlogUrl"
+                onChange={this.handleStateFieldChange}
+            />
+          </div>
           <button type="submit">Save</button>
+        </div>
       </form>
     </div>  
   )
