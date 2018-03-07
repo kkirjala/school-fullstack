@@ -2,6 +2,7 @@ import React from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogCreationForm from './components/BlogCreationForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -126,17 +127,21 @@ class App extends React.Component {
 
   }
 
-  blogCreationForm = () => (
-    <div>
-      <h2>Create a new blog</h2>
-      <BlogCreationForm handleAddBlog={this.handleAddBlog}
-        handleInputFieldChange={this.handleStateFieldChange}
-        newBlogTitle={this.state.newBlogTitle}
-        newBlogAuthor={this.state.newBlogAuthor}
-        newBlogUrl={this.state.newBlogUrl}
-      />
-    </div>
-  )
+  blogCreationForm = () => {
+
+    return (
+      <div>
+        <Togglable buttonLabel="Create a new blog">
+          <BlogCreationForm handleAddBlog={this.handleAddBlog}
+            handleInputFieldChange={this.handleStateFieldChange}
+            newBlogTitle={this.state.newBlogTitle}
+            newBlogAuthor={this.state.newBlogAuthor}
+            newBlogUrl={this.state.newBlogUrl}
+          />
+        </Togglable>
+      </div>
+    )
+}
 
 
 
