@@ -106,7 +106,8 @@ class App extends React.Component {
         newBlogAuthor: '',
         newBlogTitle: '',
         newBlogUrl: '',
-        notification: 'Blog "{blog.title}" added successfully'
+        notification: '"' + blog.title + '" added successfully',
+        blogs: this.state.blogs.concat(blog)
       })
 
       setTimeout(() => {
