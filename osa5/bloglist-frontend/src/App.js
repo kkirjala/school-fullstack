@@ -111,6 +111,8 @@ class App extends React.Component {
         blogs: this.state.blogs.concat(blog)
       })
 
+      this.blogCreationForm.toggleVisibility()
+
       setTimeout(() => {
         this.setState({ notification: null })
       }, 5000)
@@ -127,21 +129,6 @@ class App extends React.Component {
 
   }
 
-  blogCreationForm = () => {
-
-    return (
-      <div>
-        <Togglable buttonLabel="Create a new blog">
-          <BlogCreationForm handleAddBlog={this.handleAddBlog}
-            handleInputFieldChange={this.handleStateFieldChange}
-            newBlogTitle={this.state.newBlogTitle}
-            newBlogAuthor={this.state.newBlogAuthor}
-            newBlogUrl={this.state.newBlogUrl}
-          />
-        </Togglable>
-      </div>
-    )
-}
 
 
 
@@ -170,7 +157,16 @@ class App extends React.Component {
             <form onSubmit={this.handleLogout}>
               <button type="submit">Logout</button>
             </form>
-            {this.blogCreationForm()}
+
+            <Togglable buttonLabel="Create a new blog" ref={component => this.blogCreationForm = component}>
+              <BlogCreationForm handleAddBlog={this.handleAddBlog}
+                handleInputFieldChange={this.handleStateFieldChange}
+                newBlogTitle={this.state.newBlogTitle}
+                newBlogAuthor={this.state.newBlogAuthor}
+                newBlogUrl={this.state.newBlogUrl}
+              />
+            </Togglable>
+
             {this.blogList()}            
           </div>
         }
