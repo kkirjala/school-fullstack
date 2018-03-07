@@ -10,7 +10,7 @@ const LoginForm = (props) => (
                 type="text"
                 name="username"
                 value={props.username}
-                onChange={props.handleUsernameChange}
+                onChange={props.handleInputFieldChange}
             />
         </div>
         <div>
@@ -19,7 +19,7 @@ const LoginForm = (props) => (
                 type="password"
                 name="password"
                 value={props.password}
-                onChange={props.handlePasswordChange}
+                onChange={props.handleInputFieldChange}
             />
         </div>
         <button type="submit">kirjaudu</button>

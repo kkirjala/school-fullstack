@@ -72,8 +72,7 @@ class App extends React.Component {
     <div>
       <h2>Login</h2>
       <LoginForm handleLogin={this.handleLogin} 
-        handleUsernameChange={this.handleStateFieldChange}
-        handlePasswordChange={this.handleStateFieldChange}
+        handleInputFieldChange={this.handleStateFieldChange}
         username={this.state.username}
         password={this.state.password}
       />
