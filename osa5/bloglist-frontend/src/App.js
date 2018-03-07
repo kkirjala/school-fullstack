@@ -1,6 +1,7 @@
 import React from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import BlogCreationForm from './components/BlogCreationForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -129,35 +130,16 @@ class App extends React.Component {
   blogCreationForm = () => (
     <div>
       <h2>Create a new blog</h2>
-
-      <form onSubmit={this.handleAddBlog}>
-        <div>
-          <div>
-            Title <input
-                value={this.state.newBlogTitle}
-                name="newBlogTitle"
-                onChange={this.handleStateFieldChange}
-            />
-          </div>
-          <div>
-            Author <input
-                value={this.state.newBlogAuthor}
-                name="newBlogAuthor"
-                onChange={this.handleStateFieldChange}
-            />
-          </div>
-          <div>
-            URL <input
-                value={this.state.newBlogUrl}
-                name="newBlogUrl"
-                onChange={this.handleStateFieldChange}
-            />
-          </div>
-          <button type="submit">Save</button>
-        </div>
-      </form>
-    </div>  
+      <BlogCreationForm handleAddBlog={this.handleAddBlog}
+        handleInputFieldChange={this.handleStateFieldChange}
+        newBlogTitle={this.state.newBlogTitle}
+        newBlogAuthor={this.state.newBlogAuthor}
+        newBlogUrl={this.state.newBlogUrl}
+      />
+    </div>
   )
+
+
 
 
 
