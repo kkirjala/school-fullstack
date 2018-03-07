@@ -4,9 +4,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 
-
-
-
 blogsRouter.get('/', (request, response) => {
 	Blog
 		.find({})
@@ -30,7 +27,12 @@ blogsRouter.post('/', async (request, response) => {
 				.json({ error: 'authentication token missing or invalid' })
 		}
 
-		let blog = new Blog({ user: decodedToken.id, ...request.body }) // userid == tokenid
+		let blog = new Blog({
+			user: decodedToken.id, 
+			title: request.body.title,
+			author: request.body.author,
+			url: request.body.url			
+		}) // userid == tokenid
 
 		const addedPost = await blog.save()
 
