@@ -19,7 +19,10 @@ class Blog extends React.Component {
       <div style={blogStyle} key={this.props.blog.key}>
         <div>{this.props.blog.title} {this.props.blog.author}</div>
         <div><a href={this.props.blog.url}>{this.props.blog.url}</a></div>
-        <div>{this.props.blog.likes} likes <button>like</button></div>
+        <div>
+          {this.props.blog.likes} likes 
+          <button onClick={((event) => this.props.handleLikeButton(event, this.props.blog))}>like</button>
+        </div>
         <div>Added by {authorString}</div>
       </div>  
     )  

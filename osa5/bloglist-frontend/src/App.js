@@ -89,7 +89,7 @@ class App extends React.Component {
           buttonLabel={blog.title}
           ref={component => this.blogEntry = component}
         >
-          <Blog key={blog.id} blog={blog}/>
+          <Blog key={blog.id} blog={blog} handleLikeButton={this.likeBlog} />
         </Togglable>
       )}
     </div>
@@ -99,8 +99,6 @@ class App extends React.Component {
     event.preventDefault()
 
     try {
-
-      console.log(this.state.newBlogAuthor)
 
       const blog = await blogService.create({
         title: this.state.newBlogTitle,
@@ -135,10 +133,53 @@ class App extends React.Component {
 
   }
 
+  likeBlog = async (event, blog) => {
+    event.preventDefault()
+
+    try {
+
+
+      const updateBlog = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        user: blog.user._id,
+        likes: blog.likes + 1
+      }
+
+      // TODO: fix likes amount race condition
+      await blogService.update(blog.id, updateBlog)
+
+      let newBlogs = this.state.blogs.filter(b => b.id !== blog.id)
+      newBlogs.push(updateBlog)
+
+      this.setState({ 
+        blogs: newBlogs,
+        notification: '"' + blog.title + '" updated successfully',
+      })
+
+      setTimeout(() => {
+        this.setState({ notification: null })
+      }, 5000)
+
+
+    } catch (exception) {
+
+      this.setState({ 
+        error: 'Failed to update "' + blog.title + '"',
+      })
+
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 5000)
+
+    }
 
 
 
 
+
+  }
 
   render() {
 
