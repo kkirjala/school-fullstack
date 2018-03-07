@@ -8,12 +8,15 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: [],
       username: '',
       password: '',
       user: null,
       notification: null,
       error: null,
+      blogs: [],
+      newBlogTitle: '',
+      newBlogAuthor: '',
+      newBlogUrl: '',
     }
   }
 
@@ -89,6 +92,9 @@ class App extends React.Component {
     event.preventDefault()
 
     try {
+
+      console.log(this.state.newBlogAuthor)
+
       const blog = await blogService.create({
         title: this.state.newBlogTitle,
         author: this.state.newBlogAuthor,
