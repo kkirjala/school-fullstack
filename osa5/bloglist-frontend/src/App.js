@@ -69,6 +69,7 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  // TODO: fix onclick hide problem
   loginForm = () => (
     <div>
       <h2>Login</h2>
@@ -89,7 +90,10 @@ class App extends React.Component {
           buttonLabel={blog.title}
           ref={component => this.blogEntry = component}
         >
-          <Blog key={blog.id} blog={blog} handleLikeButton={this.likeBlog} />
+          <Blog key={blog.id} blog={blog} 
+            handleLikeButton={this.handleLikeBlog} 
+            handleDeleteButton={this.handleDeleteBlog}
+          />
         </Togglable>
       )}
     </div>
@@ -133,7 +137,7 @@ class App extends React.Component {
 
   }
 
-  likeBlog = async (event, blog) => {
+  handleLikeBlog = async (event, blog) => {
     event.preventDefault()
 
     try {
@@ -149,7 +153,6 @@ class App extends React.Component {
 
       // TODO: fix likes amount race condition
       await blogService.update(blog.id, updateBlog)
-
 
       // update view
       const newBlogs = await blogService.getAll()
@@ -182,6 +185,48 @@ class App extends React.Component {
 
   }
 
+  handleDeleteBlog = async (event, blog) => {
+    event.preventDefault()
+
+    try {
+      // TODO: delete not working (backend returns a 404)
+      await blogService.remove(blog.id)
+
+      // update view
+      const newBlogs = this.state.blogs.filter((b) => b.id !== blog.id)
+
+      this.setState({ 
+        blogs: newBlogs,
+        notification: '"' + blog.title + '" deleted successfully',
+      })
+
+      setTimeout(() => {
+        this.setState({ notification: null })
+      }, 5000)
+
+
+    } catch (exception) {
+
+      console.log(exception)
+
+      this.setState({ 
+        error: 'Failed to delete "' + blog.title + '"',
+      })
+
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 5000)
+
+    }
+
+
+
+
+
+  }
+
+
+  // TODO: fix onclick hide problem BlogCreationForm
   render() {
 
     return (

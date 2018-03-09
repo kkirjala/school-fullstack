@@ -24,6 +24,7 @@ class Blog extends React.Component {
           <button onClick={((event) => this.props.handleLikeButton(event, this.props.blog))}>like</button>
         </div>
         <div>Added by {authorString}</div>
+        <button onClick={((event) => this.props.handleDeleteButton(event, this.props.blog))}>delete</button>
       </div>  
     )  
   }
