@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+
 const reducer = (store = [], action) => {
 	if (action.type==='VOTE') {
 		const old = store.filter(a => a.id !==action.id)
@@ -30,13 +32,15 @@ export const anecdoteCreation = (content) => {
 	}
 }
 
-export const anecdoteInitialization = (data) => {
-	return {
+export const anecdoteInitialization = () => {
+	return async (dispatch) => {
+	  const anecdotes = await anecdoteService.getAll()
+	  dispatch({
 		type: 'INIT_ANECDOTES',
-		data
+		data: anecdotes
+	  })
 	}
-}
-
+  }
 
 
 export default reducer
