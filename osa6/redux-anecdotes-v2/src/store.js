@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux'
-import anecdoteReducer, { anecdoteCreation } from './reducers/anecdoteReducer'
+import anecdoteReducer, { anecdoteInitialization } from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 import displayFilterReducer from './reducers/displayFilterReducer'
 import anecdoteService from './services/anecdotes'
@@ -13,8 +13,7 @@ const reducer = combineReducers({
 const store = createStore(reducer)
 
 anecdoteService.getAll().then(anecdotes => 
-	anecdotes.forEach(anecdote => {
-		store.dispatch(anecdoteCreation(anecdote.content))
-	}))
+	store.dispatch(anecdoteInitialization(anecdotes))
+)
 
 export default store
