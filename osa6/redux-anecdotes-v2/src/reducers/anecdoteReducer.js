@@ -17,6 +17,7 @@ const reducer = (store = [], action) => {
 	return store
 }
 
+/*
 export const voteRegistration = (content) => {
 	return {
 		type: 'VOTE',
@@ -24,11 +25,26 @@ export const voteRegistration = (content) => {
 		votes: content.votes
 	}
 }
+*/
 
-export const anecdoteCreation = (content) => {
-	return {
-		type: 'CREATE',
-		content
+export const voteRegistration = (id, votes) => {
+	return async (dispatch) => {
+		const content = await anecdoteService.registerVote(id, votes+1)
+		dispatch({
+			type: 'VOTE',
+			id: content.id,
+			votes: content.votes
+		})
+	}
+}
+
+export const anecdoteCreation = (anecdote) => {
+	return async (dispatch) => {
+		const content = await anecdoteService.createNew(anecdote)
+		dispatch({
+			type: 'CREATE',
+			content
+		})
 	}
 }
 

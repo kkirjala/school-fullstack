@@ -16,8 +16,8 @@ export const registerVote = async (id, votes) => {
 
   const resourceUrl = url + '/' + id
   const response = await axios.patch(resourceUrl, { votes: votes })
-  
+
   return response.data
 }
 
-export default { getAll }
+export default { getAll, createNew, registerVote }

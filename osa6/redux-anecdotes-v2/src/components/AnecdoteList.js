@@ -2,18 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { voteRegistration } from '../reducers/anecdoteReducer'
 import { notificationActivation, notificationDeactivation } from '../reducers/notificationReducer'
-import { registerVote } from '../services/anecdotes'
 
 class AnecdoteList extends React.Component {
 	render() {
 		
 		const anecdotes = this.props.anecdotes
 
-		const handleVoteButton = async (id, votes) => {
-			
-			const updatedAnecdote = await registerVote(id, votes+1)
+		const handleVoteButton = (id, votes) => {
 
-			this.props.voteRegistration(updatedAnecdote)
+			this.props.voteRegistration(id, votes)
 
 			this.props.notificationActivation('A vote was cast!')
 			setTimeout(() => {
