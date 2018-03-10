@@ -1,14 +1,29 @@
 import React from 'react'
 import { voteRegistration } from '../reducers/anecdoteReducer'
 import { notificationActivation, notificationDeactivation } from '../reducers/notificationReducer'
+import Filter from '../components/Filter'
 
 class AnecdoteList extends React.Component {
 	render() {
+		
 		const anecdotes = this.props.store.getState().anecdotes
+		const filterSearchTerm = this.props.store.getState().displayFilter
+		const filteredAnecdotes = anecdotes
+			.filter(a => a.content
+				.toLowerCase()
+				.indexOf(filterSearchTerm.toLowerCase()) > -1)
+
 		return (
 			<div>
 				<h2>Anecdotes</h2>
-				{anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+				<div>
+					<Filter store={this.props.store} />
+				</div>
+
+				<div>
+				{filteredAnecdotes
+					.sort((a, b) => b.votes - a.votes)
+					.map(anecdote =>
 					<div key={anecdote.id}>
 						<div>
 							{anecdote.content}
@@ -28,6 +43,7 @@ class AnecdoteList extends React.Component {
 						</div>
 					</div>
 				)}
+				</div>
 			</div>
 		)
 	}
