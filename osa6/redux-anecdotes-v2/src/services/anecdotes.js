@@ -7,9 +7,17 @@ const getAll = async () => {
   return response.data
 }
 
-const createNew = async (content) => {
+export const createNew = async (content) => {
   const response = await axios.post(url, { content, votes: 0 })
   return response.data
 }
 
-export default { getAll, createNew }
+export const registerVote = async (id, votes) => {
+
+  const resourceUrl = url + '/' + id
+  const response = await axios.patch(resourceUrl, { votes: votes })
+  
+  return response.data
+}
+
+export default { getAll }
