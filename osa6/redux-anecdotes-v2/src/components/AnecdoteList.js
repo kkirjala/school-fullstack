@@ -11,28 +11,28 @@ class AnecdoteList extends React.Component {
 		return (
 			<div>
 				<div>
-				{anecdotes
-					.sort((a, b) => b.votes - a.votes)
-					.map(anecdote =>
-					<div key={anecdote.id}>
-						<div>
-							{anecdote.content}
-						</div>
-						<div>
+					{anecdotes
+						.sort((a, b) => b.votes - a.votes)
+						.map(anecdote =>
+							<div key={anecdote.id}>
+								<div>
+									{anecdote.content}
+								</div>
+								<div>
               has {anecdote.votes}
-							<button onClick={() => {
-								this.props.voteRegistration(anecdote.id)
+									<button onClick={() => {
+										this.props.voteRegistration(anecdote.id)
 
-								this.props.notificationActivation('A vote was cast!')
-								setTimeout(() => {
-									this.props.notificationDeactivation()
-								}, 5000)
+										this.props.notificationActivation('A vote was cast!')
+										setTimeout(() => {
+											this.props.notificationDeactivation()
+										}, 5000)
 								
-							}}>	vote
-							</button>
-						</div>
-					</div>
-				)}
+									}}>	vote
+									</button>
+								</div>
+							</div>
+						)}
 				</div>
 			</div>
 		)
@@ -44,7 +44,7 @@ const filteredAnecdotes = (anecdotes, filterSearchTerm) => {
 		.filter(a => a.content
 			.toLowerCase()
 			.indexOf(filterSearchTerm.toLowerCase()) > -1)
-		}
+}
 
 const mapStateToProps = (state) => {
 	return {
@@ -59,8 +59,8 @@ const mapDispatchToProps = {
 }
 
 const ConnectedAnecdoteList = connect(
-    mapStateToProps,
-    mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(AnecdoteList)
 
 export default ConnectedAnecdoteList
