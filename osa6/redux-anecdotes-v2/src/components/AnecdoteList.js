@@ -1,7 +1,6 @@
 import React from 'react'
 import { voteRegistration } from '../reducers/anecdoteReducer'
 import { notificationActivation, notificationDeactivation } from '../reducers/notificationReducer'
-import Filter from '../components/Filter'
 
 class AnecdoteList extends React.Component {
 	render() {
@@ -15,11 +14,6 @@ class AnecdoteList extends React.Component {
 
 		return (
 			<div>
-				<h2>Anecdotes</h2>
-				<div>
-					<Filter store={this.props.store} />
-				</div>
-
 				<div>
 				{filteredAnecdotes
 					.sort((a, b) => b.votes - a.votes)
