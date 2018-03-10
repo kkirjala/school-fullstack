@@ -17,16 +17,6 @@ const reducer = (store = [], action) => {
 	return store
 }
 
-/*
-export const voteRegistration = (content) => {
-	return {
-		type: 'VOTE',
-		id: content.id,
-		votes: content.votes
-	}
-}
-*/
-
 export const voteRegistration = (id, votes) => {
 	return async (dispatch) => {
 		const content = await anecdoteService.registerVote(id, votes+1)
