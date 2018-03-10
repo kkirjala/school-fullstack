@@ -19,17 +19,22 @@ const notificationReducer = (store = initialNotification, action) => {
 	}
 }
 
-export const notificationActivation = (notificationText) => {
-	return {
-		type: 'ACTIVATE_NOTIFICATION',
-		text: notificationText
+export const notify = (notification, timeout) => {
+	return async (dispatch) => {
+
+		await dispatch({
+			type: 'ACTIVATE_NOTIFICATION',
+			text: notification
+		})
+
+		setTimeout(() => {
+			dispatch({
+				type: 'DEACTIVATE_NOTIFICATION',
+			})
+		}, timeout*1000)
+
 	}
 }
 
-export const notificationDeactivation = () => {
-	return {
-		type: 'DEACTIVATE_NOTIFICATION'
-	}
-}
 
 export default notificationReducer

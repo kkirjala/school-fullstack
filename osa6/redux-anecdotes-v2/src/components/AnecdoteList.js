@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { voteRegistration } from '../reducers/anecdoteReducer'
-import { notificationActivation, notificationDeactivation } from '../reducers/notificationReducer'
+import { notify } from '../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
 	render() {
@@ -9,13 +9,8 @@ class AnecdoteList extends React.Component {
 		const anecdotes = this.props.anecdotes
 
 		const handleVoteButton = (id, votes) => {
-
 			this.props.voteRegistration(id, votes)
-
-			this.props.notificationActivation('A vote was cast!')
-			setTimeout(() => {
-				this.props.notificationDeactivation()
-			}, 5000)
+			this.props.notify('A vote was cast!', 5)
 		}
 
 		return (
@@ -55,8 +50,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	voteRegistration,
-	notificationActivation,
-	notificationDeactivation
+	notify
 }
 
 const ConnectedAnecdoteList = connect(
