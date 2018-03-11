@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
 
 const Menu = (state, addNew, notification) => {
 
@@ -77,13 +78,13 @@ const Menu = (state, addNew, notification) => {
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
+    <ListGroup>
       {anecdotes.map(anecdote => 
-        <li key={anecdote.id} >
+        <ListGroupItem key={anecdote.id} >
           <NavLink to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</NavLink>
-        </li>
+        </ListGroupItem>
       )}
-    </ul>  
+    </ListGroup>  
   </div>
 )
 
@@ -260,7 +261,7 @@ class App extends React.Component {
   render() {
 
     return (
-      <div>
+      <div className="container">
         <h1>Software anecdotes</h1>
           <Menu state={this.state} 
             addNew={(anecdote) => this.addNew(anecdote)}
