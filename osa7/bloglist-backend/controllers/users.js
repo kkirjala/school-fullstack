@@ -1,38 +1,44 @@
+const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
-
-usersRouter.get('/', (request, response) => {
-	User
-		.find({})
-		.populate('blogs', { _id: 1, title: 1, author: 1, url: 1, likes: 1 })
-		.then(user => {
-			response
-				.status(200)
-				.json(user.map(user => User.format(user)))
-		})
+usersRouter.get('/', async (request, response) => {
+  const users = await User
+    .find({})
+    .populate('blogs', { likes: 1, author: 1, title: 1, url: 1 })
+  response.send(users.map(User.format))
 })
 
-usersRouter.post('/', (request, response) => {
+usersRouter.post('/', async (request, response) => {
+  try {
+    const { username, name, password, adult } = request.body
 
-	const body = request.body
+    if ( password.length<3 ) {
+      return response.status(400).json({ error: 'password too short' })
+    }
 
-	const user = new User({
-		username: body.username,
-		name: body.name,
-		adult: body.adult,
-		passwordHash: body.password // hashing taken care of the model setter function
-	})
+    const existing = await User.findOne({username})
+    if (existing) {
+      return response.status(400).json({ error: 'username must be unique' })
+    }
 
-	user
-		.save()
-		.then(savedUser => {
-			response.status(201).json(User.format(savedUser))
-		})
-		.catch(err => {
-			response.status(400).json({ error: err })
-		})
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
 
+    const user = new User({
+      adult: adult || true,
+      username,
+      name,
+      passwordHash
+    })
+
+    const savedUser = await user.save()
+
+    response.status(201).json(savedUser)
+  } catch (exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'something went wrong...' })
+  }
 })
 
 module.exports = usersRouter

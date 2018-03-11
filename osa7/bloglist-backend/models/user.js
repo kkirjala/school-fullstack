@@ -1,44 +1,25 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
-	username: {
-		type: String,
-		unique: true
-	},
-	name: {
-		type: String,
-	},
-	adult: {
-		type: Boolean,
-		default: true
-	},
-	passwordHash: {
-		type: String,
-		minlength: 3,
-		
-		set: (value) => {
-			const salt = bcrypt.genSaltSync(10)
-			const hash = bcrypt.hashSync(value, salt)
-			return value.length <= 3 ? value : hash // minimum pw length validation
-		}	
-	},
-	blogs: [
-		{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }
-	]
+  username: String,
+  name: String,
+  passwordHash: String,
+  adult: Boolean,
+  blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
 })
 
 userSchema.statics.format = (user) => {
-	return {
-		id: user.id,
-		username: user.username,
-		name: user.name,
-		blogs: user.blogs
-	}
+  return {
+    _id: user._id,
+    username: user.username,
+    name: user.name,
+    blogs: user.blogs,
+    adult: user.adult
+  }
 }
 
-
-
+// koska käytän samaa kantaa kuin eräässä toisessa sovelluksessa
+// jossa myös Users-kokoelma, talletan tämän sovelluksen 
+// käyttäjät kokoelmaan BlogUsers
 const User = mongoose.model('User', userSchema)
-
 module.exports = User

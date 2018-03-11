@@ -1,8 +1,14 @@
 import React from 'react'
 
 class Blog extends React.Component {
-
+  constructor() {
+    super()
+    this.state = {
+      visible: false
+    }
+  }
   render() {
+    const { blog, like, deletable, remove } = this.props
 
     const blogStyle = {
       paddingTop: 10,
@@ -12,23 +18,36 @@ class Blog extends React.Component {
       marginBottom: 5
     }
 
-    const authorString = this.props.blog.user ? 
-      this.props.blog.user.name : 'unknown'
+    const contentStyle = {
+      display: this.state.visible? '' : 'none',
+      margin: 5,
+    }
+
+    const adder = blog.user ? blog.user.name : 'anonymous'
 
     return (
-      <div style={blogStyle} key={this.props.blog.key}>
-        <div>{this.props.blog.title} {this.props.blog.author}</div>
-        <div><a href={this.props.blog.url}>{this.props.blog.url}</a></div>
-        <div>
-          {this.props.blog.likes} likes 
-          <button onClick={((event) => this.props.handleLikeButton(event, this.props.blog))}>like</button>
+      <div style={blogStyle}>
+        <div 
+          onClick={() => this.setState({ visible: !this.state.visible })} 
+          className='name'
+        >
+          {blog.title} {blog.author}
         </div>
-        <div>Added by {authorString}</div>
-        <button onClick={((event) => this.props.handleDeleteButton(event, this.props.blog))}>delete</button>
+        <div style={contentStyle} className='content'>
+          <div>
+            <a href={blog.url}>{blog.url}</a>
+          </div>
+          <div>
+            {blog.likes} likes <button onClick={like}>like</button>
+          </div>
+          <div>
+            added by {adder}
+          </div>
+          {deletable && <div><button onClick={remove}>delete</button></div>}
+        </div>
       </div>  
-    )  
+    )
   }
 }
-
 
 export default Blog
