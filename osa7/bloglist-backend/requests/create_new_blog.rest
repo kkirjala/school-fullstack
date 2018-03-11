@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI1YTgzZWFlNjkzNzhkODdiYmVmNjEwMmIiLCJpYXQiOjE1MTg1OTU3NzV9.7SnkgyJD4irOahp80BDgM9St8VRFIZiz0MXpK9seF6k
+
+{
+    "title": "a sample blog pt 2",
+    "author": "The Author",
+    "url": "http://localhost/unknown",
+    "likes": "0"
+}
