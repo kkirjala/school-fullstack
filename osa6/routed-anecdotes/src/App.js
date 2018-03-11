@@ -63,11 +63,25 @@ const Anecdote = ({ anecdote }) => (
   </div>
 )
 
-const Notification = ({ notification }) => (
-  <div>
-    <h2>{notification}</h2>
-  </div>
-)
+const Notification = ({ notification }) => {
+ 
+  if (!notification) {
+    return('')
+  }
+
+  const notificationStyle = {
+    borderWidth: 5, 
+    borderRadius: 10,
+    borderColor: 'black',
+    padding: 5,
+    backgroundColor: 'green'
+  }
+
+  return(
+    <div style={notificationStyle}>{notification}</div>
+  )
+
+  }
 
 
 
