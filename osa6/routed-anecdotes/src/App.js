@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
 
 const Menu = (state, addNew, notification) => {
 
@@ -9,17 +9,51 @@ const Menu = (state, addNew, notification) => {
       const anecdote = anecdotes.find(anecdote => Number(anecdote.id) === Number(id))
       return anecdote
     }
-      
+    
+    const menuStyle = {
+      backgroundColor: 'cyan',
+    }
+
+    const menuItem = {
+      paddingLeft: 3,
+      paddingRight: 3,
+      color: 'black'
+    }
+
+    const menuItemActive = {
+      backgroundColor: 'black',
+      color: 'cyan'
+    }
 
     return (
       <div>
       <Router>
         <div>
-          <div>
-            <Link to="/">home</Link> &nbsp;
-            <Link to="/anecdotes">anecdotes</Link> &nbsp;
-            <Link to="/create_new">create new</Link> &nbsp;
-            <Link to="/about">about</Link>
+          <div style={menuStyle}>
+            <NavLink 
+              exact
+              to="/"
+              style={menuItem}
+              activeStyle={menuItemActive}
+            >home</NavLink>
+            <NavLink 
+              exact
+              to="/anecdotes"
+              style={menuItem}
+              activeStyle={menuItemActive}
+            >anecdotes</NavLink>
+            <NavLink 
+              exact
+              to="/create_new"
+              style={menuItem}
+              activeStyle={menuItemActive}
+            >create new</NavLink>
+            <NavLink 
+              exact
+              to="/about"
+              style={menuItem}
+              activeStyle={menuItemActive}
+            >about</NavLink>
           </div>
 
           <Notification notification={state.notification} />
@@ -46,7 +80,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <ul>
       {anecdotes.map(anecdote => 
         <li key={anecdote.id} >
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          <NavLink to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</NavLink>
         </li>
       )}
     </ul>  
