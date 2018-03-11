@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
-const Menu = (state, addNew) => {
+const Menu = (state, addNew, notification) => {
 
     const { anecdotes } = state.state
 
@@ -21,12 +21,17 @@ const Menu = (state, addNew) => {
             <Link to="/create_new">create new</Link> &nbsp;
             <Link to="/about">about</Link>
           </div>
+
+          <Notification notification={state.notification} />
+
           <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
           <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} />} />
           <Route exact path="/anecdotes/:id" render={({match}) =>
             <Anecdote anecdote={anecdoteById(match.params.id)} />}
           />
-          <Route path="/create_new" render={() => <CreateNew addNew={state.addNew}/>} />
+          <Route path="/create_new" render={({history}) => 
+            <CreateNew addNew={state.addNew} history={history} />} 
+          />
           <Route path="/about" render={() => <About />} />
         </div>
       </Router>
@@ -57,6 +62,13 @@ const Anecdote = ({ anecdote }) => (
     </p>
   </div>
 )
+
+const Notification = ({ notification }) => (
+  <div>
+    <h2>{notification}</h2>
+  </div>
+)
+
 
 
 const About = () => (
@@ -104,10 +116,12 @@ class CreateNew extends React.Component {
       info: this.state.info,
       votes: 0
     })
+
+    this.props.history.push('/')
   }
 
   render() {
-
+    
     return(
       <div>
         <h2>create a new anecdote</h2>
@@ -157,9 +171,26 @@ class App extends React.Component {
     } 
   }
 
+  notify = (text) => {
+    this.setState({
+      notification: text
+    })
+
+    setTimeout(() => {
+      this.setState({
+        notification: ''
+      })
+    }, 10000)
+
+  }
+
   addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
-    this.setState({ anecdotes: this.state.anecdotes.concat(anecdote) })
+    this.setState({ 
+      anecdotes: this.state.anecdotes.concat(anecdote) 
+    })
+
+    this.notify('A new anecdote was added!')
   }
 
   anecdoteById = (id) =>
@@ -183,7 +214,10 @@ class App extends React.Component {
     return (
       <div>
         <h1>Software anecdotes</h1>
-          <Menu state={this.state} addNew={(anecdote) => this.addNew(anecdote)} />
+          <Menu state={this.state} 
+            addNew={(anecdote) => this.addNew(anecdote)}
+            notification={this.state.notification}
+          />
           <Footer />
       </div>
     );
