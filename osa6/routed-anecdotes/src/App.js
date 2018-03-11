@@ -1,12 +1,30 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
-const Menu = () => (
-  <div>    
-    <a href='#'>anecdotes</a>&nbsp;
-    <a href='#'>create new</a>&nbsp;
-    <a href='#'>about</a>&nbsp;
-  </div>
-)
+const Menu = (state, addNew) => {
+
+    const { anecdotes } = state.state
+
+    return (
+      <div>
+      <Router>
+        <div>
+          <div>
+            <Link to="/">home</Link> &nbsp;
+            <Link to="/anecdotes">anecdotes</Link> &nbsp;
+            <Link to="/create_new">create new</Link> &nbsp;
+            <Link to="/about">about</Link>
+          </div>
+          <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+          <Route path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+          <Route path="/create_new" render={() => <CreateNew addNew={state.addNew}/>} />
+          <Route path="/about" render={() => <About />} />
+        </div>
+      </Router>
+    </div>
+    );
+
+}
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -47,10 +65,10 @@ class CreateNew extends React.Component {
       author: '',
       info: ''
     }
+
   }
 
   handleChange = (e) => {
-    console.log(e.target.name, e.target.value)
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -65,6 +83,7 @@ class CreateNew extends React.Component {
   }
 
   render() {
+
     return(
       <div>
         <h2>create a new anecdote</h2>
@@ -136,14 +155,12 @@ class App extends React.Component {
   }
 
   render() {
+
     return (
       <div>
         <h1>Software anecdotes</h1>
-          <Menu />
-          <AnecdoteList anecdotes={this.state.anecdotes} />
-          <About />      
-          <CreateNew addNew={this.addNew}/>
-        <Footer />
+          <Menu state={this.state} addNew={(anecdote) => this.addNew(anecdote)} />
+          <Footer />
       </div>
     );
   }
