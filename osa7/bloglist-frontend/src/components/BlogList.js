@@ -1,5 +1,6 @@
 import React from 'react'
 import Blog from './Blog'
+import { Link } from 'react-router-dom'
 
 const BlogList = ({blogs, handleLike}) => {
 
@@ -11,10 +12,13 @@ const BlogList = ({blogs, handleLike}) => {
     <div>
         <h2>blogs</h2>
         {blogsInOrder.map(blog => 
-            <Blog key={blog._id} 
-                blog={blog} 
-                like={handleLike(blog._id)}
-            />
+            <Link to={`/blogs/${blog._id}`}>
+                <Blog key={blog._id} 
+                    blog={blog} 
+                    like={handleLike(blog._id)}
+                />
+            </Link>
+
         )}
     </div>
   )

@@ -10,6 +10,10 @@ class Blog extends React.Component {
   render() {
     const { blog, like, deletable, remove } = this.props
 
+    if (!blog) {
+      return null
+    }
+
     const blogStyle = {
       paddingTop: 10,
       paddingLeft: 2,

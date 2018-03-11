@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import Blog from './components/Blog'
+import BlogDetails from './components/BlogDetails'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -167,8 +167,9 @@ class App extends React.Component {
         <Router>
           <div>
             <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} handleLike={this.like} />} />
+            <Route exact path="/blogs" render={() => <BlogList blogs={this.state.blogs} handleLike={this.like} />} />
             <Route exact path="/blogs/:id" render={({match}) =>
-              <Blog blog={this.state.blogs.find(b => b.id === Number(match.params.id))} />}
+              <BlogDetails blog={this.state.blogs.find(b => b._id === match.params.id)} handleLike={this.like} />}
             />
             <Route exact path="/users" render={() => <UserList users={this.state.users} />}
             />
