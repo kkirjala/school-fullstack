@@ -1,10 +1,16 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
+import BlogList from './components/BlogList'
+import UserList from './components/UserList'
+import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 
 class App extends React.Component {
   constructor(props) {
@@ -25,6 +31,9 @@ class App extends React.Component {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
+
+    this.fetchUsers()
+
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -32,6 +41,11 @@ class App extends React.Component {
       blogService.setToken(user.token)
     }
   } 
+
+  fetchUsers = async () => {
+    const users = await userService.getAll()
+    this.setState({ users: users })
+  }
 
   notify = (message, type = 'info') => {
     this.setState({
@@ -123,37 +137,17 @@ class App extends React.Component {
       return (
         <div>
           <Notification notification={this.state.notification} />
-          <h2>Kirjaudu sovellukseen</h2>
-          <form onSubmit={this.login}>
-            <div>
-              käyttäjätunnus
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleLoginChange}
-              />
-            </div>
-            <div>
-              salasana
-              <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleLoginChange}
-              />
-            </div>
-            <button type="submit">kirjaudu</button>
-          </form>
+          <LoginForm handleLogin={this.login}
+            handleLoginChange={this.handleLoginChange}
+            username={this.state.username}
+            password={this.state.password} 
+          />         
         </div>
       )
     }
 
-    const byLikes = (b1, b2) => b2.likes - b1.likes
 
-    const blogsInOrder = this.state.blogs.sort(byLikes)
-
-    return (
+    return (      
       <div>
         <Notification notification={this.state.notification} />
 
@@ -169,15 +163,20 @@ class App extends React.Component {
           />
         </Togglable>
 
-        <h2>blogs</h2>
-        {blogsInOrder.map(blog => 
-          <Blog 
-            key={blog._id} 
-            blog={blog} 
-            like={this.like(blog._id)}
-            remove={this.remove(blog._id)}            
-          />
-        )}
+        <Router>
+          <div>
+            <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} handleLike={this.like} />} />
+            <Route exact path="/blogs/:id" render={({match}) =>
+              <Blog blog={this.state.blogs.find(b => b.id === Number(match.params.id))} />}
+            />
+            <Route exact path="/users" render={() => <UserList users={this.state.users} />}
+            />
+            <Route exact path="/users/:id" render={({match}) =>
+              <User user={match.params.id} />}
+            />
+          </div>
+        </Router>
+        
       </div>
     );
   }

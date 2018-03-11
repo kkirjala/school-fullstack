@@ -3,6 +3,7 @@ import React from 'react'
 
 const LoginForm = (props) => (
   <div>
+    <h2>Kirjaudu sovellukseen</h2>
     <form onSubmit={props.handleLogin}>
         <div>
             käyttäjätunnus
@@ -10,7 +11,7 @@ const LoginForm = (props) => (
                 type="text"
                 name="username"
                 value={props.username}
-                onChange={props.handleInputFieldChange}
+                onChange={props.handleLoginChange}
             />
         </div>
         <div>
@@ -19,7 +20,7 @@ const LoginForm = (props) => (
                 type="password"
                 name="password"
                 value={props.password}
-                onChange={props.handleInputFieldChange}
+                onChange={props.handleLoginChange}
             />
         </div>
         <button type="submit">kirjaudu</button>
