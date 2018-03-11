@@ -17,6 +17,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       blogs: [],
+      users: [],
       user: null,
       username: '',
       password: '', 
@@ -171,12 +172,12 @@ class App extends React.Component {
             />
             <Route exact path="/users" render={() => <UserList users={this.state.users} />}
             />
-            <Route exact path="/users/:id" render={({match}) =>
-              <User user={match.params.id} />}
-            />
+            <Route exact path="/users/:id" render={({match}) => 
+              <User user={this.state.users.find(u => u._id === match.params.id)} />}
+            />              
           </div>
         </Router>
-        
+
       </div>
     );
   }

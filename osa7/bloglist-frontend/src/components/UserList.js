@@ -13,7 +13,7 @@ const UserList = (props) => {
             <h2>users</h2>
             {users.map(user => 
                 <div key={user._id}>
-                    <Link to={`/users/${user._id}`}>{user.name}</Link>
+                    <Link to={`/users/${user._id}`}>{user.name}</Link>&nbsp;
                     ({user.blogs.length} blogs)
                 </div>                
             )}
